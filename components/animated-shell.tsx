@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { Variants, motion } from "framer-motion";
 import { useWizard } from "react-use-wizard";
 
@@ -35,7 +36,7 @@ export default function AnimatedShell({
         stiffness: 300,
         damping: 30,
       }}
-      className={className}
+      className={cn(className, "container py-16 max-w-3xl")}
     >
       {children}
     </motion.section>
