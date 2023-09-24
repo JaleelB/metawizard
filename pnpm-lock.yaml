@@ -77,6 +77,9 @@ dependencies:
   react-hook-form:
     specifier: ^7.46.2
     version: 7.46.2(react@18.2.0)
+  react-use-wizard:
+    specifier: ^2.2.3
+    version: 2.2.3(react-dom@18.2.0)(react@18.2.0)
   tailwind-merge:
     specifier: ^1.14.0
     version: 1.14.0
@@ -3104,6 +3107,17 @@ packages:
       invariant: 2.2.4
       react: 18.2.0
       tslib: 2.6.2
+    dev: false
+
+  /react-use-wizard@2.2.3(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-Oh3EfpmWwF7vW1YZ2EgSLoU9VKJ13+TyLNmT56rBhLoXr3FXZoDEmtyxZ46GVkcicl/8qiHX0C42M6n2oKDkEQ==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /react@18.2.0:
