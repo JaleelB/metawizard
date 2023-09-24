@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-//utility schemas
 const fileSchema = z.union([
   z.object({
     file: z.union([z.string().optional(), z.null().optional()]),
