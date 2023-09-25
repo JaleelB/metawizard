@@ -26,8 +26,8 @@ export function FormShell<T extends FieldValues>({
   const navigation: NavigationType = steps.reduce((acc, step, index) => {
     const stepNumber = (index + 1).toString();
     acc[stepNumber] = {
-      prevButton: steps[index - 1],
-      nextButton: steps[index + 1] || "Generate Results",
+      prevButton: steps[index - 1]?.title || "Previous",
+      nextButton: steps[index + 1]?.title || "Generate Results",
     };
     return acc;
   }, {} as NavigationType);
@@ -38,7 +38,7 @@ export function FormShell<T extends FieldValues>({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(submitFunc)}
-        className="w-full flex flex-col"
+        className="w-full h-full overflow-y-auto flex flex-col"
       >
         <div className="space-y-6">{children}</div>
         <div className="flex gap-2 ml-auto mt-16">
