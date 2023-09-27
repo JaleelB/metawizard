@@ -57,7 +57,6 @@ export const siteConfigSchema = z.object({
 
 export const siteImagesConfigSchema = z.object({
   siteLogo: fileSchema.optional(),
-  openGraphImage: fileSchema.optional(),
   autoGenerateSiteLogo: switchSchema.optional(),
   autoGenerateOpenGraphImage: switchSchema.optional(),
 });

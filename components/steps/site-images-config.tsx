@@ -29,7 +29,6 @@ export default function SiteImgagesLayout() {
       autoGenerateSiteLogo: false,
       autoGenerateOpenGraphImage: false,
       siteLogo: "",
-      openGraphImage: "",
     },
   });
 
@@ -123,29 +122,6 @@ export default function SiteImgagesLayout() {
               <div className="space-y-1 leading-none">
                 <FormLabel>Auto generate your site&nbsp; logo</FormLabel>
               </div>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="openGraphImage"
-          render={({ field }) => (
-            <FormItem className="pt-5">
-              <FormLabel>Open Graph/Twitter image</FormLabel>
-              <FormControl>
-                <Input
-                  id="open-graph-image"
-                  type="file"
-                  accept="image/png, image/jpeg, image/jpg"
-                  disabled={isAutoGeneratingOpenGraphImage}
-                  {...(field as any)}
-                />
-              </FormControl>
-              <FormDescription>
-                This image will be used as the default image for Open Graph and
-                Twitter cards.
-              </FormDescription>
-              <FormMessage />
             </FormItem>
           )}
         />
