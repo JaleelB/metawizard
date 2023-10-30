@@ -17,7 +17,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { Switch } from "../ui/switch";
 import { useWizard } from "react-use-wizard";
-import AnimatedShell from "../animated-shell";
+import AnimatedShell from "../animated-form-shell";
 import {
   Select,
   SelectContent,

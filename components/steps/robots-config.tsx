@@ -15,7 +15,7 @@ import { z } from "zod";
 import React from "react";
 import { Switch } from "../ui/switch";
 import { useWizard } from "react-use-wizard";
-import AnimatedShell from "../animated-shell";
+import AnimatedShell from "../animated-form-shell";
 import { useSaveToIndexedDB } from "@/hooks/useSaveToIndexedDB";
 
 type RobotsConfigSchema = z.infer<typeof robotsConfigSchema>;

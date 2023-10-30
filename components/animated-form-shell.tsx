@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { Variants, motion } from "framer-motion";
 import { useWizard } from "react-use-wizard";
 
-export default function AnimatedShell({
+export default function AnimatedFormShell({
   children,
   className,
 }: {

@@ -16,7 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import React from "react";
 import { useWizard } from "react-use-wizard";
-import AnimatedShell from "../animated-shell";
+import AnimatedShell from "../animated-form-shell";
 import { useSaveToIndexedDB } from "@/hooks/useSaveToIndexedDB";
 
 type AuthorConfigSchema = z.infer<typeof authorConfigSchema>;

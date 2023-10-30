@@ -16,7 +16,7 @@ import { z } from "zod";
 import React from "react";
 import { Tag, TagInput } from "../tag-input";
 import { useWizard } from "react-use-wizard";
-import AnimatedShell from "../animated-shell";
+import AnimatedShell from "../animated-form-shell";
 import { useSaveToIndexedDB } from "@/hooks/useSaveToIndexedDB";
 import { siteConfigSchema } from "@/schemas/schema";
 
