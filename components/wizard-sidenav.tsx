@@ -1,17 +1,20 @@
 import { useWizard } from "react-use-wizard";
 import { Icons } from "./ui/icons";
 import { type Step } from "@/config/steps-config";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { Button } from "./ui/button";
 import { motion } from "framer-motion";
-import { useLocalStorage } from "@/hooks/use-local-storage";
 
-export default function WizardNav({ steps }: { steps: Step[] }) {
+export default function WizardNav({
+  steps,
+  isNavVisible,
+  setIsNavVisible,
+}: {
+  steps: Step[];
+  isNavVisible: boolean;
+  setIsNavVisible: Dispatch<SetStateAction<boolean>>;
+}) {
   const { activeStep } = useWizard();
-  const [isNavVisible, setIsNavVisible] = useLocalStorage({
-    key: "wizard-nav-visible",
-    defaultValue: true,
-  });
 
   return (
     <aside className="relative">
@@ -33,7 +36,7 @@ export default function WizardNav({ steps }: { steps: Step[] }) {
                 }`}
               >
                 <div className="h-5 w-5 pt-0.5">
-                  <Icons.check className="h-5 w-5 text-primary" />
+                  <Icons.checkCircle className="h-5 w-5 text-primary" />
                 </div>
 
                 <div>
@@ -69,7 +72,7 @@ export default function WizardNav({ steps }: { steps: Step[] }) {
         >
           <motion.div
             animate={{ rotate: !isNavVisible ? 0 : 180 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
           >
             <Icons.chevronRight className="w-4 h-4" />
           </motion.div>

@@ -1,7 +1,12 @@
+import BuilderNav from "@/components/builder-nav";
+
 export default async function ConfigurePageLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <main className="flex-grow w-screen h-screen">{children}</main>;
+  <main className="w-screen h-screen overflow-hidden">
+    <BuilderNav />
+    {children}
+  </main>;
 }
