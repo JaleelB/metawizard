@@ -28,7 +28,6 @@ export default function SiteImgagesLayout() {
     defaultValues: {
       autoGenerateSiteLogo: false,
       autoGenerateOpenGraphImage: false,
-      siteLogo: "",
     },
   });
 
@@ -76,33 +75,6 @@ export default function SiteImgagesLayout() {
         </p>
       </div>
       <FormShell submitFunc={onSubmit} form={form}>
-        <FormField
-          control={form.control}
-          name="siteLogo"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Site logo</FormLabel>
-              <FormControl>
-                <Input
-                  id="site-logo"
-                  type="file"
-                  accept="image/png, image/jpeg, image/jpg"
-                  disabled={isAutoGeneratingSiteLogo}
-                  // Using 'any' here as a quick fix to bypass TypeScript's type checking.
-                  // This is because the 'field' object coming from react-hook-form has a 'value' property
-                  // that is not directly compatible with the 'Input' component's expected props.
-                  // Note: This is not the most type-safe way and should be revisited for a more robust solution.
-                  {...(field as any)}
-                />
-              </FormControl>
-              <FormDescription>
-                This is the logo that will be displayed on your website or
-                application.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <FormField
           control={form.control}
           name="autoGenerateSiteLogo"
