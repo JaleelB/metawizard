@@ -29,6 +29,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
 import { useSaveToIndexedDB } from "@/hooks/useSaveToIndexedDB";
+import { useSessionStorage } from "@/hooks/use-session-storage";
 
 type SitemapConfigSchema = z.infer<typeof sitemapConfigSchema>;
 
@@ -81,12 +82,28 @@ export default function SitemapConfigLayout() {
     React.useState(true);
   const generateSitemapFile = form.watch("generateSitemapFile");
 
+  const [sitemapConfig, setSitemapConfig] = useSessionStorage({
+    key: "sitemapConfig",
+    defaultValue: {},
+    onPutSuccess: () => {
+      // nextStep();
+    },
+    onPutError: (toastProps) => {
+      toast(toastProps);
+    },
+  });
+
+  const onSubmit: SubmitHandler<SitemapConfigSchema> = async (values) => {
+    await setSitemapConfig(values);
+    nextStep();
+  };
+
   // Go to the next step if the form is submitted
-  React.useEffect(() => {
-    if (isSubmitted) {
-      nextStep();
-    }
-  }, [isSubmitted, nextStep]);
+  // React.useEffect(() => {
+  //   if (isSubmitted) {
+  //     nextStep();
+  //   }
+  // }, [isSubmitted, nextStep]);
 
   // Control the form values based on the generateSitemapFile value
   React.useEffect(() => {
@@ -100,22 +117,22 @@ export default function SitemapConfigLayout() {
     }
   }, [form, generateSitemapFile]);
 
-  const onSubmit: SubmitHandler<SitemapConfigSchema> = async (values) => {
-    await save({
-      values,
-      uniqueKey: 5,
-      storeName: "sitemapConfig",
-      onPutSuccess: () => {
-        setIsSubmitted(true);
-      },
-      onPutError: (toastProps) => {
-        toast(toastProps);
-      },
-      onOpenError: (toastProps) => {
-        toast(toastProps);
-      },
-    });
-  };
+  // const onSubmit: SubmitHandler<SitemapConfigSchema> = async (values) => {
+  //   await save({
+  //     values,
+  //     uniqueKey: 5,
+  //     storeName: "sitemapConfig",
+  //     onPutSuccess: () => {
+  //       setIsSubmitted(true);
+  //     },
+  //     onPutError: (toastProps) => {
+  //       toast(toastProps);
+  //     },
+  //     onOpenError: (toastProps) => {
+  //       toast(toastProps);
+  //     },
+  //   });
+  // };
 
   const staticSitemapFileExample = `
         app/sitemap.xml

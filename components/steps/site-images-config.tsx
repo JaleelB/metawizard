@@ -19,6 +19,7 @@ import { Checkbox } from "../ui/checkbox";
 import { useWizard } from "react-use-wizard";
 import AnimatedShell from "../animated-form-shell";
 import { useSaveToIndexedDB } from "@/hooks/useSaveToIndexedDB";
+import { useSessionStorage } from "@/hooks/use-session-storage";
 
 type SiteImagesConfigSchema = z.infer<typeof siteImagesConfigSchema>;
 
@@ -41,28 +42,42 @@ export default function SiteImgagesLayout() {
   const [isAutoGeneratingOpenGraphImage, setIsAutoGeneratingOpenGraphImage] =
     React.useState(false);
 
-  React.useEffect(() => {
-    if (isSubmitted) {
-      nextStep();
-    }
-  }, [isSubmitted, nextStep]);
+  const [siteImagesConfig, setSiteImagesConfig] = useSessionStorage({
+    key: "siteImages",
+    defaultValue: {},
+    onPutSuccess: () => {},
+    onPutError: (toastProps) => {
+      toast(toastProps);
+    },
+  });
 
   const onSubmit: SubmitHandler<SiteImagesConfigSchema> = async (values) => {
-    await save({
-      values,
-      uniqueKey: 2,
-      storeName: "siteImages",
-      onPutSuccess: () => {
-        setIsSubmitted(true);
-      },
-      onPutError: (toastProps) => {
-        toast(toastProps);
-      },
-      onOpenError: (toastProps) => {
-        toast(toastProps);
-      },
-    });
+    await setSiteImagesConfig(values);
+    nextStep();
   };
+
+  // React.useEffect(() => {
+  //   if (isSubmitted) {
+  //     nextStep();
+  //   }
+  // }, [isSubmitted, nextStep]);
+
+  // const onSubmit: SubmitHandler<SiteImagesConfigSchema> = async (values) => {
+  //   await save({
+  //     values,
+  //     uniqueKey: 2,
+  //     storeName: "siteImages",
+  //     onPutSuccess: () => {
+  //       setIsSubmitted(true);
+  //     },
+  //     onPutError: (toastProps) => {
+  //       toast(toastProps);
+  //     },
+  //     onOpenError: (toastProps) => {
+  //       toast(toastProps);
+  //     },
+  //   });
+  // };
 
   return (
     <AnimatedShell className="flex flex-col gap-12">

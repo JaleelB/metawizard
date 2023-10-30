@@ -18,6 +18,7 @@ import { Switch } from "../ui/switch";
 import { useWizard } from "react-use-wizard";
 import { useSaveToIndexedDB } from "@/hooks/useSaveToIndexedDB";
 import AnimatedFormShell from "../animated-form-shell";
+import { useSessionStorage } from "@/hooks/use-session-storage";
 
 type SiteManifestConfigSchema = z.infer<typeof siteManifestConfigSchema>;
 
@@ -43,28 +44,44 @@ export default function SiteManifestConfigLayout() {
     setIsGeneratingStaticSiteManifestFile,
   ] = React.useState(true);
 
-  React.useEffect(() => {
-    if (isSubmitted) {
-      router.push("/generate");
-    }
-  }, [isSubmitted, nextStep, router]);
+  const [siteManifestConfig, setSiteManifestConfig] = useSessionStorage({
+    key: "siteManifestConfig",
+    defaultValue: {},
+    onPutSuccess: () => {
+      // nextStep();
+    },
+    onPutError: (toastProps) => {
+      toast(toastProps);
+    },
+  });
 
   const onSubmit: SubmitHandler<SiteManifestConfigSchema> = async (values) => {
-    await save({
-      values,
-      uniqueKey: 6,
-      storeName: "siteManifestConfig",
-      onPutSuccess: () => {
-        setIsSubmitted(true);
-      },
-      onPutError: (toastProps) => {
-        toast(toastProps);
-      },
-      onOpenError: (toastProps) => {
-        toast(toastProps);
-      },
-    });
+    await setSiteManifestConfig(values);
+    router.push("/generate");
   };
+
+  // React.useEffect(() => {
+  //   if (isSubmitted) {
+  //     router.push("/generate");
+  //   }
+  // }, [isSubmitted, nextStep, router]);
+
+  // const onSubmit: SubmitHandler<SiteManifestConfigSchema> = async (values) => {
+  //   await save({
+  //     values,
+  //     uniqueKey: 6,
+  //     storeName: "siteManifestConfig",
+  //     onPutSuccess: () => {
+  //       setIsSubmitted(true);
+  //     },
+  //     onPutError: (toastProps) => {
+  //       toast(toastProps);
+  //     },
+  //     onOpenError: (toastProps) => {
+  //       toast(toastProps);
+  //     },
+  //   });
+  // };
 
   const staticSiteManifestFileExample = `
         app/manifest.json | app/manifest.webmanifest

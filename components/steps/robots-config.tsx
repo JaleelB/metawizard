@@ -17,6 +17,7 @@ import { Switch } from "../ui/switch";
 import { useWizard } from "react-use-wizard";
 import AnimatedShell from "../animated-form-shell";
 import { useSaveToIndexedDB } from "@/hooks/useSaveToIndexedDB";
+import { useSessionStorage } from "@/hooks/use-session-storage";
 
 type RobotsConfigSchema = z.infer<typeof robotsConfigSchema>;
 
@@ -39,28 +40,44 @@ export default function RobotsConfigLayout() {
   const [isGeneratingStaticRobotsFile, setIsGeneratingStaticRobotsFile] =
     React.useState(true);
 
-  React.useEffect(() => {
-    if (isSubmitted) {
-      nextStep();
-    }
-  }, [isSubmitted, nextStep]);
+  const [robotsConfig, setRobotsConfig] = useSessionStorage({
+    key: "robotsConfig",
+    defaultValue: {},
+    onPutSuccess: () => {
+      // nextStep();
+    },
+    onPutError: (toastProps) => {
+      toast(toastProps);
+    },
+  });
 
   const onSubmit: SubmitHandler<RobotsConfigSchema> = async (values) => {
-    await save({
-      values,
-      uniqueKey: 4,
-      storeName: "robotsConfig",
-      onPutSuccess: () => {
-        setIsSubmitted(true);
-      },
-      onPutError: (toastProps) => {
-        toast(toastProps);
-      },
-      onOpenError: (toastProps) => {
-        toast(toastProps);
-      },
-    });
+    await setRobotsConfig(values);
+    nextStep();
   };
+
+  // React.useEffect(() => {
+  //   if (isSubmitted) {
+  //     nextStep();
+  //   }
+  // }, [isSubmitted, nextStep]);
+
+  // const onSubmit: SubmitHandler<RobotsConfigSchema> = async (values) => {
+  //   await save({
+  //     values,
+  //     uniqueKey: 4,
+  //     storeName: "robotsConfig",
+  //     onPutSuccess: () => {
+  //       setIsSubmitted(true);
+  //     },
+  //     onPutError: (toastProps) => {
+  //       toast(toastProps);
+  //     },
+  //     onOpenError: (toastProps) => {
+  //       toast(toastProps);
+  //     },
+  //   });
+  // };
 
   const staticRobotsFileExample = `
         app/robots.txt

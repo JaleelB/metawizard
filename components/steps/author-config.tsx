@@ -18,6 +18,7 @@ import React from "react";
 import { useWizard } from "react-use-wizard";
 import AnimatedShell from "../animated-form-shell";
 import { useSaveToIndexedDB } from "@/hooks/useSaveToIndexedDB";
+import { useSessionStorage } from "@/hooks/use-session-storage";
 
 type AuthorConfigSchema = z.infer<typeof authorConfigSchema>;
 
@@ -33,28 +34,43 @@ export default function AuthorConfigsLayout() {
 
   const [isSubmitted, setIsSubmitted] = React.useState(false);
 
-  React.useEffect(() => {
-    if (isSubmitted) {
-      nextStep();
-    }
-  }, [isSubmitted, nextStep]);
+  const [authorConfig, setAuthorConfig] = useSessionStorage({
+    key: "authorConfig",
+    defaultValue: {},
+    onPutSuccess: () => {},
+    onPutError: (toastProps) => {
+      toast(toastProps);
+      console.error("error saving author config", toastProps);
+    },
+  });
 
   const onSubmit: SubmitHandler<AuthorConfigSchema> = async (values) => {
-    await save({
-      values,
-      uniqueKey: 3,
-      storeName: "authorConfig",
-      onPutSuccess: () => {
-        setIsSubmitted(true);
-      },
-      onPutError: (toastProps) => {
-        toast(toastProps);
-      },
-      onOpenError: (toastProps) => {
-        toast(toastProps);
-      },
-    });
+    await setAuthorConfig(values);
+    nextStep();
   };
+
+  // React.useEffect(() => {
+  //   if (isSubmitted) {
+  //     nextStep();
+  //   }
+  // }, [isSubmitted, nextStep]);
+
+  // const onSubmit: SubmitHandler<AuthorConfigSchema> = async (values) => {
+  //   await save({
+  //     values,
+  //     uniqueKey: 3,
+  //     storeName: "authorConfig",
+  //     onPutSuccess: () => {
+  //       setIsSubmitted(true);
+  //     },
+  //     onPutError: (toastProps) => {
+  //       toast(toastProps);
+  //     },
+  //     onOpenError: (toastProps) => {
+  //       toast(toastProps);
+  //     },
+  //   });
+  // };
 
   return (
     <AnimatedShell className="w-full flex flex-col gap-12">
