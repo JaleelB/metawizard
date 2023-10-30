@@ -3,6 +3,7 @@ import { Icons } from "./ui/icons";
 import { type Step } from "@/config/steps-config";
 import React from "react";
 import { Button } from "./ui/button";
+import { motion } from "framer-motion";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 
 export default function WizardNav({ steps }: { steps: Step[] }) {
@@ -14,10 +15,11 @@ export default function WizardNav({ steps }: { steps: Step[] }) {
 
   return (
     <aside className="relative">
-      <div
-        className={`h-full ${
-          isNavVisible ? "lg:block" : "lg:hidden"
-        } border-r px-6 py-12`}
+      <motion.div
+        initial={{ x: "-100%" }}
+        animate={{ x: isNavVisible ? "0%" : "-100%" }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+        className={`h-full lg:block border-r px-6 py-12 absolute top-0 bottom-0`}
       >
         <div className="flex flex-col">
           <div className="flex flex-col gap-6">
@@ -51,20 +53,28 @@ export default function WizardNav({ steps }: { steps: Step[] }) {
             ))}
           </div>
         </div>
-      </div>
-      <div
-        className={`absolute bottom-0 ${
-          isNavVisible ? "pl-6 w-[350px] -rotate-180" : "w-[50px] pl-6"
-        } left-0 z-10 flex h-20 items-center justify-start`}
+      </motion.div>
+      <motion.div
+        className={`absolute bottom-0 left-0 z-10 flex h-20 items-center justify-end ${
+          isNavVisible ? "pr-6" : "ml-1"
+        }`}
+        initial={{ width: "50px" }}
+        animate={{ width: isNavVisible ? "350px" : "50px" }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
       >
         <Button
           onClick={() => setIsNavVisible(!isNavVisible)}
           variant={"outline"}
-          className="hidden h-8 w-8 items-center justify-center px-0 lg:flex"
+          className="hidden h-8 w-8 items-center border-gray-400 justify-center px-0 lg:flex"
         >
-          <Icons.chevronLeft className="w-4 h-4" />
+          <motion.div
+            animate={{ rotate: !isNavVisible ? 0 : 180 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+          >
+            <Icons.chevronRight className="w-4 h-4" />
+          </motion.div>
         </Button>
-      </div>
+      </motion.div>
     </aside>
   );
 }
