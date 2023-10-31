@@ -7,7 +7,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
-import { FormShell } from "../form-shell";
+import { FormShell } from "./form-shell";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { siteManifestConfigSchema } from "@/schemas/schema";

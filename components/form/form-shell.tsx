@@ -1,7 +1,7 @@
 import { SubmitHandler, FieldValues, UseFormReturn } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import React from "react";
-import { Form } from "./ui/form";
+import { Form } from "../ui/form";
 import { useWizard } from "react-use-wizard";
 import { steps } from "@/config/steps-config";
 

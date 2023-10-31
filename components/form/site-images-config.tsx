@@ -5,24 +5,27 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { FormShell } from "../form-shell";
+import { FormShell } from "./form-shell";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { siteImagesConfigSchema } from "@/schemas/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import React from "react";
-import { Checkbox } from "../ui/checkbox";
 import { useWizard } from "react-use-wizard";
-import AnimatedShell from "./animated-form-shell";
-import { useSaveToIndexedDB } from "@/hooks/useSaveToIndexedDB";
-import { useSessionStorage } from "@/hooks/use-session-storage";
+import AnimatedFormShell from "./animated-form-shell";
+import { styles, useFormContext } from "@/state/form-state";
 import FormStepHeader from "./form-step-header";
+import { generateSiteImagesContent } from "@/lib/form-markdown-preview";
+import { Switch } from "../ui/switch";
+import { useSessionStorage } from "@/hooks/use-session-storage";
+import FormStepLayout from "./form-step-layout";
+import VisualStylePicker from "../visual-style-picker";
 
-type SiteImagesConfigSchema = z.infer<typeof siteImagesConfigSchema>;
+export type SiteImagesConfigSchema = z.infer<typeof siteImagesConfigSchema>;
+
+export type Styles = typeof styles;
 
 export default function SiteImgagesLayout() {
   const form = useForm<SiteImagesConfigSchema>({
@@ -34,17 +37,17 @@ export default function SiteImgagesLayout() {
   });
 
   const { nextStep } = useWizard();
-  const { save } = useSaveToIndexedDB();
   const { toast } = useToast();
-
-  const [isSubmitted, setIsSubmitted] = React.useState(false);
   const [isAutoGeneratingSiteLogo, setIsAutoGeneratingSiteLogo] =
     React.useState(false);
   const [isAutoGeneratingOpenGraphImage, setIsAutoGeneratingOpenGraphImage] =
     React.useState(false);
+  const { state, dispatch } = useFormContext();
+  const storeName = "siteImagesConfig";
+  const reducerStateGroup = `${storeName}Data`;
 
   const [siteImagesConfig, setSiteImagesConfig] = useSessionStorage({
-    key: "siteImages",
+    key: storeName,
     defaultValue: {},
     onPutSuccess: () => {},
     onPutError: (toastProps) => {
@@ -52,63 +55,207 @@ export default function SiteImgagesLayout() {
     },
   });
 
+  const handleInputChange = React.useCallback(
+    (
+      event:
+        | React.ChangeEvent<HTMLInputElement>
+        | {
+            target: {
+              name: string;
+              checked?: boolean;
+              value?: string;
+            };
+          }
+    ) => {
+      const target = event.target as HTMLInputElement;
+      const value = target.checked ? target.checked : target.value;
+
+      dispatch({
+        type: "SET_FORM_DATA",
+        payload: {
+          key: `${reducerStateGroup}.${target.name}`,
+          value: value,
+        },
+      });
+    },
+    [dispatch, reducerStateGroup]
+  );
+
+  React.useEffect(() => {
+    if (isAutoGeneratingSiteLogo) {
+      form.setValue("siteLogoStyles", styles);
+    }
+    if (isAutoGeneratingOpenGraphImage) {
+      form.setValue("openGraphImageStyles", styles);
+    }
+  }, [isAutoGeneratingSiteLogo, isAutoGeneratingOpenGraphImage, form]);
+
   const onSubmit: SubmitHandler<SiteImagesConfigSchema> = async (values) => {
     await setSiteImagesConfig(values);
     nextStep();
   };
 
   return (
-    <AnimatedShell className="flex flex-col gap-12">
-      <FormStepHeader
-        title="Site images"
-        description="Define the visual identity of your website or application."
-      />
-      <FormShell submitFunc={onSubmit} form={form}>
-        <FormField
-          control={form.control}
-          name="autoGenerateSiteLogo"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={(checkedState) => {
-                    field.onChange(checkedState);
-                    if (checkedState === true || checkedState === false) {
+    <FormStepLayout
+      code={generateSiteImagesContent(state)}
+      title="site images preview"
+    >
+      <AnimatedFormShell>
+        <FormStepHeader
+          title="Site images"
+          description="Define the visual identity of your website or application."
+        />
+        <FormShell submitFunc={onSubmit} form={form}>
+          <FormField
+            control={form.control}
+            name="autoGenerateSiteLogo"
+            render={({ field }) => (
+              <FormItem className="flex flex-row justify-between items-center space-y-0 rounded-md border p-4">
+                <div className="space-y-1 leading-none mr-4 sm:mr-2">
+                  <FormLabel>Auto generate a site logo</FormLabel>
+                  <FormDescription>
+                    This allows you to programmatically generate a site
+                    logo/icon using code. This done by creating an icon route
+                    that default exports a function.
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <Switch
+                    id="auto-generate-site-logo"
+                    checked={field.value}
+                    onCheckedChange={(checkedState) => {
+                      field.onChange(checkedState);
                       setIsAutoGeneratingSiteLogo(checkedState);
-                    }
-                  }}
-                />
-              </FormControl>
-              <div className="space-y-1 leading-none">
-                <FormLabel>Auto generate your site&nbsp; logo</FormLabel>
-              </div>
-            </FormItem>
+                      const event = {
+                        target: {
+                          name: "autoGenerateSiteLogo",
+                          checked: checkedState,
+                        },
+                      };
+                      handleInputChange(event);
+                    }}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          {isAutoGeneratingSiteLogo && (
+            <VisualStylePicker
+              inputFields={[
+                {
+                  label: "Text",
+                  name: "siteLogoStyles.text",
+                  type: "text",
+                },
+                {
+                  label: "Font Color",
+                  name: "siteLogoStyles.color",
+                  type: "color",
+                },
+                {
+                  label: "Background Color",
+                  name: "siteLogoStyles.backgroundColor",
+                  type: "color",
+                },
+                {
+                  label: "Border Radius",
+                  name: "siteLogoStyles.borderRadius",
+                  type: "select",
+                  options: ["square", "rounded", "circle"],
+                },
+                {
+                  label: "Font Size",
+                  name: "siteLogoStyles.fontSize",
+                  type: "number",
+                },
+              ]}
+              styles={styles}
+              control={form.control}
+              setValue={form.setValue}
+              autoGenerateSiteLogo={isAutoGeneratingSiteLogo}
+              autoGenerateOpenGraphImage={false}
+              dispatch={dispatch}
+              reducerStateGroup={reducerStateGroup}
+            />
           )}
-        />
-        <FormField
-          control={form.control}
-          name="autoGenerateOpenGraphImage"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={(checkedState) => {
-                    field.onChange(checkedState);
-                    if (checkedState === true || checkedState === false) {
+          <FormField
+            control={form.control}
+            name="autoGenerateOpenGraphImage"
+            render={({ field }) => (
+              <FormItem className="flex flex-row justify-between items-center space-y-0 rounded-md border p-4">
+                <div className="space-y-1 leading-none mr-4 sm:mr-2">
+                  <FormLabel>
+                    Auto generate an open-graph/twitter image
+                  </FormLabel>
+                  <FormDescription>
+                    This allows you to programmatically generate a
+                    opengraph-image/twitter-image images for a route segment.
+                    They are useful for setting the images that appear on social
+                    networks and messaging apps when a user shares a link to
+                    your site.
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <Switch
+                    id="auto-generate-site-logo"
+                    checked={field.value}
+                    onCheckedChange={(checkedState) => {
+                      field.onChange(checkedState);
                       setIsAutoGeneratingOpenGraphImage(checkedState);
-                    }
-                  }}
-                />
-              </FormControl>
-              <div className="space-y-1 leading-none">
-                <FormLabel>Auto generate Open Graph/Twitter image</FormLabel>
-              </div>
-            </FormItem>
+                      const event = {
+                        target: {
+                          name: "autoGenerateOpenGraphImage",
+                          checked: checkedState,
+                        },
+                      };
+                      handleInputChange(event);
+                    }}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          {isAutoGeneratingOpenGraphImage && (
+            <VisualStylePicker
+              inputFields={[
+                {
+                  label: "Text",
+                  name: "openGraphImageStyles.text",
+                  type: "text",
+                },
+                {
+                  label: "Font Color",
+                  name: "openGraphImageStyles.color",
+                  type: "color",
+                },
+                {
+                  label: "Background Color",
+                  name: "openGraphImageStyles.backgroundColor",
+                  type: "color",
+                },
+                {
+                  label: "Border Radius",
+                  name: "openGraphImageStyles.borderRadius",
+                  type: "select",
+                  options: ["square", "rounded", "circle"],
+                },
+                {
+                  label: "Font Size",
+                  name: "openGraphImageStyles.fontSize",
+                  type: "number",
+                },
+              ]}
+              styles={styles}
+              control={form.control}
+              setValue={form.setValue}
+              autoGenerateSiteLogo={false}
+              autoGenerateOpenGraphImage={isAutoGeneratingOpenGraphImage}
+              dispatch={dispatch}
+              reducerStateGroup={reducerStateGroup}
+            />
           )}
-        />
-      </FormShell>
-    </AnimatedShell>
+        </FormShell>
+      </AnimatedFormShell>
+    </FormStepLayout>
   );
 }

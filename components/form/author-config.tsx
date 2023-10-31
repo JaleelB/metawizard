@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { FormShell } from "../form-shell";
+import { FormShell } from "./form-shell";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { authorConfigSchema } from "@/schemas/schema";
 import { zodResolver } from "@hookform/resolvers/zod";

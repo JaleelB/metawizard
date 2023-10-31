@@ -8,7 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
-import { FormShell } from "../form-shell";
+import { FormShell } from "./form-shell";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { sitemapConfigSchema } from "@/schemas/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
