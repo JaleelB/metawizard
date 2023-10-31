@@ -1,6 +1,6 @@
 import BuilderNav from "@/components/builder-nav";
 
-export default async function ConfigurePageLayout({
+export default async function BuilderLayout({
   children,
 }: {
   children: React.ReactNode;

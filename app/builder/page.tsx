@@ -15,7 +15,7 @@ import { toast } from "@/components/ui/use-toast";
 import WizardNav from "@/components/wizard-sidenav";
 import SiteManifestConfigLayout from "@/components/form/site-manifest-config";
 
-export default function ConfigurePage() {
+export default function BuilderPage() {
   const [isNavVisible, setIsNavVisible] = useLocalStorage({
     key: "wizard-nav-visible",
     defaultValue: true,
