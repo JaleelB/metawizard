@@ -30,6 +30,7 @@ import { Button } from "../ui/button";
 import { X } from "lucide-react";
 import { useSaveToIndexedDB } from "@/hooks/useSaveToIndexedDB";
 import { useSessionStorage } from "@/hooks/use-session-storage";
+import FormStepHeader from "./form-step-header";
 
 type SitemapConfigSchema = z.infer<typeof sitemapConfigSchema>;
 
@@ -98,13 +99,6 @@ export default function SitemapConfigLayout() {
     nextStep();
   };
 
-  // Go to the next step if the form is submitted
-  // React.useEffect(() => {
-  //   if (isSubmitted) {
-  //     nextStep();
-  //   }
-  // }, [isSubmitted, nextStep]);
-
   // Control the form values based on the generateSitemapFile value
   React.useEffect(() => {
     if (generateSitemapFile) {
@@ -116,23 +110,6 @@ export default function SitemapConfigLayout() {
       form.setValue("siteEndpoints", []);
     }
   }, [form, generateSitemapFile]);
-
-  // const onSubmit: SubmitHandler<SitemapConfigSchema> = async (values) => {
-  //   await save({
-  //     values,
-  //     uniqueKey: 5,
-  //     storeName: "sitemapConfig",
-  //     onPutSuccess: () => {
-  //       setIsSubmitted(true);
-  //     },
-  //     onPutError: (toastProps) => {
-  //       toast(toastProps);
-  //     },
-  //     onOpenError: (toastProps) => {
-  //       toast(toastProps);
-  //     },
-  //   });
-  // };
 
   const staticSitemapFileExample = `
         app/sitemap.xml
@@ -190,16 +167,12 @@ export default function SitemapConfigLayout() {
 
   return (
     <AnimatedShell className={"flex flex-col gap-12 w-full"}>
-      <div>
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-1">
-          Sitemap.xml File Config
-        </h1>
-        <p className="text-muted-foreground">
-          Configure a file that matches the Sitemaps XML format in the root of
+      <FormStepHeader
+        title="Sitemap.xml File Config"
+        description="Configure a file that matches the Sitemaps XML format in the root of
           app directory to help search engine crawlers crawl your site more
-          efficiently.
-        </p>
-      </div>
+          efficiently."
+      />
       <FormShell submitFunc={onSubmit} form={form}>
         <FormField
           control={form.control}

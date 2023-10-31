@@ -20,6 +20,7 @@ import { useWizard } from "react-use-wizard";
 import AnimatedShell from "./animated-form-shell";
 import { useSaveToIndexedDB } from "@/hooks/useSaveToIndexedDB";
 import { useSessionStorage } from "@/hooks/use-session-storage";
+import FormStepHeader from "./form-step-header";
 
 type SiteImagesConfigSchema = z.infer<typeof siteImagesConfigSchema>;
 
@@ -56,39 +57,12 @@ export default function SiteImgagesLayout() {
     nextStep();
   };
 
-  // React.useEffect(() => {
-  //   if (isSubmitted) {
-  //     nextStep();
-  //   }
-  // }, [isSubmitted, nextStep]);
-
-  // const onSubmit: SubmitHandler<SiteImagesConfigSchema> = async (values) => {
-  //   await save({
-  //     values,
-  //     uniqueKey: 2,
-  //     storeName: "siteImages",
-  //     onPutSuccess: () => {
-  //       setIsSubmitted(true);
-  //     },
-  //     onPutError: (toastProps) => {
-  //       toast(toastProps);
-  //     },
-  //     onOpenError: (toastProps) => {
-  //       toast(toastProps);
-  //     },
-  //   });
-  // };
-
   return (
     <AnimatedShell className="flex flex-col gap-12">
-      <div>
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-1">
-          Site images
-        </h1>
-        <p className="text-muted-foreground">
-          Upload key images for your website or application.
-        </p>
-      </div>
+      <FormStepHeader
+        title="Site images"
+        description="Define the visual identity of your website or application."
+      />
       <FormShell submitFunc={onSubmit} form={form}>
         <FormField
           control={form.control}

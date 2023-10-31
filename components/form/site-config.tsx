@@ -20,6 +20,7 @@ import AnimatedShell from "./animated-form-shell";
 import { useSaveToIndexedDB } from "@/hooks/useSaveToIndexedDB";
 import { siteConfigSchema } from "@/schemas/schema";
 import { useSessionStorage } from "@/hooks/use-session-storage";
+import FormStepHeader from "./form-step-header";
 
 type SiteConfigSchema = z.infer<typeof siteConfigSchema>;
 
@@ -52,39 +53,12 @@ export default function SiteConfigLayout() {
     nextStep();
   };
 
-  // React.useEffect(() => {
-  //   if (isSubmitted) {
-  //     nextStep();
-  //   }
-  // }, [isSubmitted, nextStep]);
-
-  // const onSubmit: SubmitHandler<SiteConfigSchema> = async (values) => {
-  //   await save({
-  //     values,
-  //     uniqueKey: 1,
-  //     storeName: "siteConfig",
-  //     onPutSuccess: () => {
-  //       setIsSubmitted(true);
-  //     },
-  //     onPutError: (toastProps) => {
-  //       toast(toastProps);
-  //     },
-  //     onOpenError: (toastProps) => {
-  //       toast(toastProps);
-  //     },
-  //   });
-  // };
-
   return (
     <AnimatedShell className="flex flex-col gap-12">
-      <div>
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-1">
-          Site config
-        </h1>
-        <p className="text-muted-foreground">
-          Define key details about your website or application.
-        </p>
-      </div>
+      <FormStepHeader
+        title="Site config"
+        description="Define key details about your website or application."
+      />
       <FormShell submitFunc={onSubmit} form={form}>
         <FormField
           control={form.control}

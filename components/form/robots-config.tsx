@@ -18,6 +18,7 @@ import { useWizard } from "react-use-wizard";
 import AnimatedShell from "./animated-form-shell";
 import { useSaveToIndexedDB } from "@/hooks/useSaveToIndexedDB";
 import { useSessionStorage } from "@/hooks/use-session-storage";
+import FormStepHeader from "./form-step-header";
 
 type RobotsConfigSchema = z.infer<typeof robotsConfigSchema>;
 
@@ -56,29 +57,6 @@ export default function RobotsConfigLayout() {
     nextStep();
   };
 
-  // React.useEffect(() => {
-  //   if (isSubmitted) {
-  //     nextStep();
-  //   }
-  // }, [isSubmitted, nextStep]);
-
-  // const onSubmit: SubmitHandler<RobotsConfigSchema> = async (values) => {
-  //   await save({
-  //     values,
-  //     uniqueKey: 4,
-  //     storeName: "robotsConfig",
-  //     onPutSuccess: () => {
-  //       setIsSubmitted(true);
-  //     },
-  //     onPutError: (toastProps) => {
-  //       toast(toastProps);
-  //     },
-  //     onOpenError: (toastProps) => {
-  //       toast(toastProps);
-  //     },
-  //   });
-  // };
-
   const staticRobotsFileExample = `
         app/robots.txt
 
@@ -108,16 +86,12 @@ export default function RobotsConfigLayout() {
 
   return (
     <AnimatedShell className="w-full flex flex-col gap-12">
-      <div>
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-1">
-          Robots.txt File Config
-        </h1>
-        <p className="text-muted-foreground">
-          Configure a file that matches the Robots Exclusion Standard in the
+      <FormStepHeader
+        title="Robots.txt File Config"
+        description="Configure a file that matches the Robots Exclusion Standard in the
           root of app directory to tell search engine crawlers which URLs they
-          can access on your site.
-        </p>
-      </div>
+          can access on your site."
+      />
       <FormShell submitFunc={onSubmit} form={form}>
         <FormField
           control={form.control}
