@@ -17,7 +17,7 @@ import React from "react";
 import { Switch } from "../ui/switch";
 import { useWizard } from "react-use-wizard";
 import { useSaveToIndexedDB } from "@/hooks/useSaveToIndexedDB";
-import AnimatedFormShell from "../animated-form-shell";
+import AnimatedFormShell from "./animated-form-shell";
 import { useSessionStorage } from "@/hooks/use-session-storage";
 
 type SiteManifestConfigSchema = z.infer<typeof siteManifestConfigSchema>;

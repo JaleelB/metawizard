@@ -17,7 +17,7 @@ import { z } from "zod";
 import React from "react";
 import { Checkbox } from "../ui/checkbox";
 import { useWizard } from "react-use-wizard";
-import AnimatedShell from "../animated-form-shell";
+import AnimatedShell from "./animated-form-shell";
 import { useSaveToIndexedDB } from "@/hooks/useSaveToIndexedDB";
 import { useSessionStorage } from "@/hooks/use-session-storage";
 
