@@ -19,7 +19,7 @@
     "@radix-ui/react-switch": "^1.0.3",
     "@radix-ui/react-toast": "^1.1.5",
     "@types/node": "20.6.4",
-    "@types/react": "18.2.22",
+    "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
     "@types/uuid": "^9.0.6",
     "autoprefixer": "10.4.16",
@@ -29,7 +29,7 @@
     "eslint": "8.50.0",
     "framer-motion": "^10.16.4",
     "lucide-react": "^0.279.0",
-    "next": "14.0.0",
+    "next": "14.0.1",
     "postcss": "8.4.30",
     "prism-react-renderer": "^2.1.0",
     "react": "18.2.0",
@@ -46,6 +46,6 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "eslint-config-next": "14.0.0"
+    "eslint-config-next": "14.0.1"
   }
 }

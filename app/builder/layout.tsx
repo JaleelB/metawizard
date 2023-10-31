@@ -5,8 +5,10 @@ export default async function BuilderLayout({
 }: {
   children: React.ReactNode;
 }) {
-  <main className="w-screen h-screen overflow-hidden">
-    <BuilderNav />
-    {children}
-  </main>;
+  return (
+    <main className="w-screen h-screen overflow-hidden">
+      <BuilderNav />
+      {children}
+    </main>
+  );
 }
