@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import "../../mdx.css";
 import { notFound } from "next/navigation";
 import Balancer from "react-wrap-balancer";
+import { DocsPager } from "@/components/docs-pager";
 
 type DocPageProps = {
   params: {
@@ -45,6 +46,7 @@ export default async function GeneratedPage({ params }: DocPageProps) {
         <div className="pb-12 pt-8">
           <Mdx code={content.body.code} />
         </div>
+        <DocsPager doc={content} />
       </div>
     </main>
   );
