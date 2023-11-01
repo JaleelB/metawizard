@@ -21,8 +21,12 @@ export default function WizardNav({
       <motion.div
         initial={{ x: "-100%" }}
         animate={{ x: isNavVisible ? "0%" : "-100%" }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-        className={`h-full lg:block border-r px-6 py-12 absolute top-0 bottom-0`}
+        transition={{
+          type: "spring",
+          stiffness: 300,
+          damping: 30,
+        }}
+        className={`h-full border-r px-6 py-12 absolute top-0 bottom-0`}
       >
         <div className="flex flex-col">
           <div className="flex flex-col gap-6">
@@ -58,17 +62,19 @@ export default function WizardNav({
         </div>
       </motion.div>
       <motion.div
-        className={`absolute bottom-0 left-0 z-10 flex h-20 items-center justify-end ${
-          isNavVisible ? "pr-6" : "ml-1"
-        }`}
-        initial={{ width: "50px" }}
-        animate={{ width: isNavVisible ? "350px" : "50px" }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
+        className={`absolute bottom-0 left-0 z-10 flex h-20 items-center`}
+        initial={{ x: "20px" }}
+        animate={{ x: isNavVisible ? "295px" : "20px" }}
+        transition={{
+          type: "spring",
+          stiffness: 300,
+          damping: 30,
+        }}
       >
         <Button
           onClick={() => setIsNavVisible(!isNavVisible)}
           variant={"outline"}
-          className="hidden h-8 w-8 items-center border-gray-400 justify-center px-0 lg:flex"
+          className="hidden h-8 w-8 items-center border-gray-400 justify-center px-0 2xl:flex"
         >
           <motion.div
             animate={{ rotate: !isNavVisible ? 0 : 180 }}
