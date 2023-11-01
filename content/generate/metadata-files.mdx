@@ -1,0 +1,47 @@
+---
+title: Metadata Files
+description: File-based metadata can be defined by adding special metadata files to route segments.
+---
+
+<div className="mt-3" />
+
+## About
+
+Each file convention can be defined using a static file (e.g. opengraph-image.jpg), or a dynamic variant that uses code to generate the file (e.g. opengraph-image.js). Once a file is defined, Next.js will automatically serve the file (with hashes in production for caching) and update the relevant head elements with the correct metadata, such as the asset's URL, and file type. Find more about Metadata file conventions here: [Metadata Files API](https://nextjs.org/docs/app/api-reference/file-conventions/metadata).
+
+## Configuration
+
+import { MetadataCodeRenderer } from "@/components/metadata-code-renderer";
+
+export const Sitemap = () => {
+  const text = `To add or generate a sitemap.xml file that matches the Sitemaps XML format, copy and paste the following following code. 
+    Create a sitemap.ts file if you opted to dynamically generate a sitemap.xml, or create a sitemap.xml file and paste the code there if 
+    you opted to add a static sitemap.xml file. Place this file in the root of app directory to help search engine crawlers crawl your site more efficiently.`;
+  return (
+    <MetadataCodeRenderer functionName="generatesiteMapContent" text={text} />
+  );
+};
+
+<Sitemap />
+
+export const Robots = () => {
+  const text = `To add or generate a robots.txt file that matches the Robots Exclusion Standard, copy and paste the following following code. 
+    Create a robots.ts file if you opted to dynamically generate a robots.txt, or create a robots.txt file and paste the code there if 
+    you opted to add a static robots.txt file. Place this file in the root of app directory o tell search engine crawlers which URLs they can access on your site.`;
+  return (
+    <MetadataCodeRenderer functionName="generateRobotsContent" text={text} />
+  );
+};
+
+<Robots />
+
+export const SiteManifest = () => {
+  const text = `To add or generate a manifest.(json|webmanifest) file that matches the Web Manifest Specification, copy and paste the following following code. 
+    Create a manifest.ts file if you opted to dynamically generate a manifest file, or create a manifest.json | manifest.webmanifest file and paste the code there if 
+    you opted to add a static manifest file. Place this file in the root of app directory to provide information about your web application for the browser.`;
+  return (
+    <MetadataCodeRenderer functionName="generateWebManifest" text={text} />
+  );
+};
+
+<SiteManifest />
