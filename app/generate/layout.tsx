@@ -19,7 +19,7 @@ export default async function GeneratePageLayout({
         </aside>
         <ScrollArea className="relative flex-1 min-h-[calc(100vh - 56px)] scrollbar-hide">
           {children}
-          <ScrollBar className="bg-transparent" />
+          <ScrollBar className="hidden" />
         </ScrollArea>
       </div>
     </div>
