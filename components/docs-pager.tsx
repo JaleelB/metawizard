@@ -5,13 +5,50 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "./ui/button";
 import { Icons } from "./ui/icons";
 import { sideNavItems } from "@/config/docs";
+import { retrieveFromStorage } from "@/hooks/storage";
+import { sitemapConfig } from "@/app/data/sitemaps";
+import { robotsConfig } from "@/app/data/robots";
+import { siteManifestConfig } from "@/app/data/manifest";
+import { siteImagesConfigType } from "@/app/data/images";
 
 type DocsPagerProps = {
   doc: Doc;
 };
 
-export function DocsPager({ doc }: DocsPagerProps) {
-  const pager = getPagerForDoc(doc);
+export async function isGeneratingImageFiles() {
+  const siteImagesConfig = await retrieveFromStorage<siteImagesConfigType>(
+    "siteImagesConfig",
+    "session"
+  );
+  return (
+    siteImagesConfig?.autoGenerateSiteLogo === true ||
+    siteImagesConfig?.autoGenerateOpenGraphImage === true
+  );
+}
+
+export async function isGeneratingMetadataFiles() {
+  const sitemapConfigData = await retrieveFromStorage<sitemapConfig>(
+    "sitemapConfig",
+    "session"
+  );
+  const robotsConfigData = await retrieveFromStorage<robotsConfig>(
+    "robotsConfig",
+    "session"
+  );
+  const siteManifestConfigData = await retrieveFromStorage<siteManifestConfig>(
+    "siteManifestConfig",
+    "session"
+  );
+
+  return (
+    sitemapConfigData?.generateSitemapFile === true ||
+    robotsConfigData?.generateRobotsFile === true ||
+    siteManifestConfigData?.generateSiteManifestFile === true
+  );
+}
+
+export async function DocsPager({ doc }: DocsPagerProps) {
+  const pager = await getPagerForDoc(doc);
 
   if (!pager) {
     return null;
@@ -41,8 +78,24 @@ export function DocsPager({ doc }: DocsPagerProps) {
   );
 }
 
-export function getPagerForDoc(doc: Doc) {
-  const flattenedLinks = [null, ...flatten(sideNavItems), null];
+export async function getPagerForDoc(doc: Doc) {
+  const generatingImages = await isGeneratingImageFiles();
+  const generatingMetadata = await isGeneratingMetadataFiles();
+
+  const flattenedLinks = [
+    null,
+    ...flatten(sideNavItems).filter((link) => {
+      if (link?.title === "Image Files" && !generatingImages) {
+        return false; // Exclude "Image Files" link if not generating images
+      }
+      if (link?.title === "Metadata Files" && !generatingMetadata) {
+        return false; // Exclude "Metadata Files" link if not generating metadata
+      }
+      return true; // Include all other links
+    }),
+    null,
+  ];
+
   const activeIndex = flattenedLinks.findIndex(
     (link) => doc.slug === link?.href
   );
