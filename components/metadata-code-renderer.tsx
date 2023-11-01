@@ -5,7 +5,7 @@ import { generateMetadataObject } from "@/data/site";
 import { generateOpenGraphTwitterImage, generateSiteLogo } from "@/data/images";
 import { generateRobotsContent } from "@/data/robots";
 import { generateWebManifest } from "@/data/manifest";
-import { generatesiteMapContent } from "@/data/sitemaps";
+import { generatesiteMapContent } from "@/data/sitemap";
 
 interface MetadataCodeRendererProps {
   functionName: keyof typeof functions;

@@ -54,18 +54,22 @@ export function DocsSidebarNav({ items }: DocsSidebarNavProps) {
   });
 
   return filteredItems.length ? (
-    <div className="w-full">
-      {filteredItems.map((item, index) => (
-        <div key={index} className={cn("pb-4")}>
-          <h4 className="mb-1 rounded-md px-2 py-1 text-sm font-semibold">
-            {item.title}
-          </h4>
-          {item?.items?.length && (
-            <DocsSidebarNavItems items={item.items} pathname={pathname} />
-          )}
+    <aside className="fixed z-30 -ml-2 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 md:sticky md:block">
+      <div className="relative overflow-hidden h-full pr-6">
+        <div className="w-full">
+          {filteredItems.map((item, index) => (
+            <div key={index} className={cn("pb-4")}>
+              <h4 className="mb-1 rounded-md px-2 py-1 text-sm font-semibold">
+                {item.title}
+              </h4>
+              {item?.items?.length && (
+                <DocsSidebarNavItems items={item.items} pathname={pathname} />
+              )}
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
+      </div>
+    </aside>
   ) : null;
 }
 
