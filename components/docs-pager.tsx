@@ -6,7 +6,7 @@ import { buttonVariants } from "./ui/button";
 import { Icons } from "./ui/icons";
 import { sideNavItems } from "@/config/docs";
 import { retrieveFromStorage } from "@/hooks/storage";
-import { sitemapConfig } from "@/data/sitemaps";
+import { sitemapConfig } from "@/data/sitemap";
 import { robotsConfig } from "@/data/robots";
 import { siteManifestConfig } from "@/data/manifest";
 import { siteImagesConfigType } from "@/data/images";
@@ -58,7 +58,17 @@ export async function isGeneratingMetadataObject() {
     "session"
   );
 
-  return authorConfigData !== null || siteConfigData !== null;
+  const isEmptyObject = (obj: authorType | siteConfig | null): boolean => {
+    if (obj === null) {
+      return true; // Treat null as an empty object
+    }
+    return Object.keys(obj).length === 0 && obj.constructor === Object;
+  };
+
+  const isAuthorConfigEmpty = isEmptyObject(authorConfigData);
+  const isSiteConfigEmpty = isEmptyObject(siteConfigData);
+
+  return !isAuthorConfigEmpty && !isSiteConfigEmpty;
 }
 
 export async function DocsPager({ doc }: DocsPagerProps) {

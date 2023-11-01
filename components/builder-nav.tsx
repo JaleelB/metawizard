@@ -6,7 +6,7 @@ import { siteConfig } from "@/config/site";
 
 export default function BuilderNav() {
   return (
-    <header className="supports-backdrop-blur:bg-background/60 w-full border-b bg-background/95 backdrop-blur flex items-center">
+    <header className="supports-backdrop-blur:bg-background/60 w-full border-b bg-background/95 backdrop-blur flex items-center supports-backdrop-blur:bg-background/60 sticky top-0 z-50">
       <div className="w-full px-6 h-14 md:h-[65px] flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <Icons.logo className="h-[30px] w-[30px] text-primary" />
