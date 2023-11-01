@@ -6,10 +6,10 @@ import { buttonVariants } from "./ui/button";
 import { Icons } from "./ui/icons";
 import { sideNavItems } from "@/config/docs";
 import { retrieveFromStorage } from "@/hooks/storage";
-import { sitemapConfig } from "@/app/data/sitemaps";
-import { robotsConfig } from "@/app/data/robots";
-import { siteManifestConfig } from "@/app/data/manifest";
-import { siteImagesConfigType } from "@/app/data/images";
+import { sitemapConfig } from "@/data/sitemaps";
+import { robotsConfig } from "@/data/robots";
+import { siteManifestConfig } from "@/data/manifest";
+import { siteImagesConfigType } from "@/data/images";
 
 type DocsPagerProps = {
   doc: Doc;

@@ -1,14 +1,11 @@
 "use client";
 import * as React from "react";
 import CodeBlock from "./builder/code-block";
-import { generateMetadataObject } from "@/app/data/site";
-import {
-  generateOpenGraphTwitterImage,
-  generateSiteLogo,
-} from "@/app/data/images";
-import { generateRobotsContent } from "@/app/data/robots";
-import { generateWebManifest } from "@/app/data/manifest";
-import { generatesiteMapContent } from "@/app/data/sitemaps";
+import { generateMetadataObject } from "@/data/site";
+import { generateOpenGraphTwitterImage, generateSiteLogo } from "@/data/images";
+import { generateRobotsContent } from "@/data/robots";
+import { generateWebManifest } from "@/data/manifest";
+import { generatesiteMapContent } from "@/data/sitemaps";
 
 interface MetadataCodeRendererProps {
   functionName: keyof typeof functions;

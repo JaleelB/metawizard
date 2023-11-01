@@ -5,12 +5,12 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { SidebarNavItem } from "@/types/nav";
-import { siteImagesConfigType } from "@/app/data/images";
+import { siteImagesConfigType } from "@/data/images";
 import React from "react";
 import { retrieveFromStorage } from "@/hooks/storage";
-import { sitemapConfig } from "@/app/data/sitemaps";
-import { robotsConfig } from "@/app/data/robots";
-import { siteManifestConfig } from "@/app/data/manifest";
+import { sitemapConfig } from "@/data/sitemaps";
+import { robotsConfig } from "@/data/robots";
+import { siteManifestConfig } from "@/data/manifest";
 import {
   isGeneratingImageFiles,
   isGeneratingMetadataFiles,
