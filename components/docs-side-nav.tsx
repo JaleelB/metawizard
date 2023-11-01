@@ -5,15 +5,11 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { SidebarNavItem } from "@/types/nav";
-import { siteImagesConfigType } from "@/data/images";
 import React from "react";
-import { retrieveFromStorage } from "@/hooks/storage";
-import { sitemapConfig } from "@/data/sitemaps";
-import { robotsConfig } from "@/data/robots";
-import { siteManifestConfig } from "@/data/manifest";
 import {
   isGeneratingImageFiles,
   isGeneratingMetadataFiles,
+  isGeneratingMetadataObject,
 } from "./docs-pager";
 
 export interface DocsSidebarNavProps {
@@ -21,19 +17,24 @@ export interface DocsSidebarNavProps {
 }
 
 export function DocsSidebarNav({ items }: DocsSidebarNavProps) {
-  const [showImageConventions, setShowImageConventions] = React.useState(false);
-  const [showMetadataConventions, setShowMetadataConventions] =
+  const [showImageFileConventions, setShowImageFileConventions] =
     React.useState(false);
+  const [showMetadataFileConventions, setShowMetadataFileConventions] =
+    React.useState(false);
+  const [showMetadataObject, setShowMetadataObject] = React.useState(false);
 
   const pathname = usePathname();
 
   React.useEffect(() => {
     async function checkImageGeneration() {
       const generating = await isGeneratingImageFiles();
-      setShowImageConventions(generating);
+      setShowImageFileConventions(generating);
 
       const generatingMetadata = await isGeneratingMetadataFiles();
-      setShowMetadataConventions(generatingMetadata);
+      setShowMetadataFileConventions(generatingMetadata);
+
+      const generatingMetadataObject = await isGeneratingMetadataObject();
+      setShowMetadataObject(generatingMetadataObject);
     }
 
     checkImageGeneration();
@@ -45,8 +46,10 @@ export function DocsSidebarNav({ items }: DocsSidebarNavProps) {
         ...item,
         items: item.items.filter(
           (subItem) =>
-            (subItem.title !== "Image Files" || showImageConventions) &&
-            (subItem.title !== "Metadata Files" || showMetadataConventions)
+            (subItem.title !== "Image Files" || showImageFileConventions) &&
+            (subItem.title !== "Metadata Files" ||
+              showMetadataFileConventions) &&
+            (subItem.title !== "Metadata Object" || showMetadataObject)
         ),
       };
     }
@@ -54,22 +57,18 @@ export function DocsSidebarNav({ items }: DocsSidebarNavProps) {
   });
 
   return filteredItems.length ? (
-    <aside className="fixed z-30 -ml-2 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 md:sticky md:block">
-      <div className="relative overflow-hidden h-full pr-6">
-        <div className="w-full">
-          {filteredItems.map((item, index) => (
-            <div key={index} className={cn("pb-4")}>
-              <h4 className="mb-1 rounded-md px-2 py-1 text-sm font-semibold">
-                {item.title}
-              </h4>
-              {item?.items?.length && (
-                <DocsSidebarNavItems items={item.items} pathname={pathname} />
-              )}
-            </div>
-          ))}
+    <div className="w-full">
+      {filteredItems.map((item, index) => (
+        <div key={index} className={cn("pb-4")}>
+          <h4 className="mb-1 rounded-md px-2 py-1 text-sm font-semibold">
+            {item.title}
+          </h4>
+          {item?.items?.length && (
+            <DocsSidebarNavItems items={item.items} pathname={pathname} />
+          )}
         </div>
-      </div>
-    </aside>
+      ))}
+    </div>
   ) : null;
 }
 

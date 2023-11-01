@@ -10,6 +10,7 @@ import { sitemapConfig } from "@/data/sitemaps";
 import { robotsConfig } from "@/data/robots";
 import { siteManifestConfig } from "@/data/manifest";
 import { siteImagesConfigType } from "@/data/images";
+import { authorType, siteConfig } from "@/data/site";
 
 type DocsPagerProps = {
   doc: Doc;
@@ -47,6 +48,19 @@ export async function isGeneratingMetadataFiles() {
   );
 }
 
+export async function isGeneratingMetadataObject() {
+  const authorConfigData = await retrieveFromStorage<authorType>(
+    "authorConfig",
+    "session"
+  );
+  const siteConfigData = await retrieveFromStorage<siteConfig>(
+    "siteConfig",
+    "session"
+  );
+
+  return authorConfigData !== null || siteConfigData !== null;
+}
+
 export async function DocsPager({ doc }: DocsPagerProps) {
   const pager = await getPagerForDoc(doc);
 
@@ -80,7 +94,8 @@ export async function DocsPager({ doc }: DocsPagerProps) {
 
 export async function getPagerForDoc(doc: Doc) {
   const generatingImages = await isGeneratingImageFiles();
-  const generatingMetadata = await isGeneratingMetadataFiles();
+  const generatingMetadataFiles = await isGeneratingMetadataFiles();
+  const generatingMetadataObject = await isGeneratingMetadataObject();
 
   const flattenedLinks = [
     null,
@@ -88,8 +103,11 @@ export async function getPagerForDoc(doc: Doc) {
       if (link?.title === "Image Files" && !generatingImages) {
         return false; // Exclude "Image Files" link if not generating images
       }
-      if (link?.title === "Metadata Files" && !generatingMetadata) {
+      if (link?.title === "Metadata Files" && !generatingMetadataFiles) {
         return false; // Exclude "Metadata Files" link if not generating metadata
+      }
+      if (link?.title === "Metadata Object" && !generatingMetadataObject) {
+        return false; // Exclude "Metadata Objects" link if not generating metadata
       }
       return true; // Include all other links
     }),
