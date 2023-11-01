@@ -14,8 +14,8 @@ export default function BuilderNav() {
             {siteConfig.name}
           </h4>
         </Link>
-        <nav className="flex items-center gap-4">
-          <div className="hidden lg:flex gap-4">
+        <nav className="flex items-center gap-2">
+          <div className="hidden lg:flex gap-2">
             <Link
               href={siteConfig.links.github}
               target="_blank"
