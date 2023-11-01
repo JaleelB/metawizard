@@ -1,5 +1,5 @@
 import SiteHeader from "@/components/header";
-import { DocsSidebarNav } from "@/components/side-nav";
+import { DocsSidebarNav } from "@/components/docs-side-nav";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { sideNavItems } from "@/config/docs";
 
