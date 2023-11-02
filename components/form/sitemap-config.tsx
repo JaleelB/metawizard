@@ -163,7 +163,11 @@ export default function SitemapConfigLayout() {
 
   return (
     <FormStepLayout
-      code={generateSitemapDetailsContent(state) || ""}
+      code={
+        isGeneratingSitemapFile
+          ? generateSitemapDetailsContent(state) || ""
+          : ""
+      }
       title="sitemap.xml config preview"
     >
       <AnimatedFormShell className={"flex flex-col w-full"}>

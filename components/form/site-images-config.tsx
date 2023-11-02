@@ -97,7 +97,11 @@ export default function SiteImgagesLayout() {
 
   return (
     <FormStepLayout
-      code={generateSiteImagesContent(state)}
+      code={
+        !isAutoGeneratingSiteLogo && !isAutoGeneratingOpenGraphImage
+          ? ""
+          : generateSiteImagesContent(state)
+      }
       title="site images preview"
     >
       <AnimatedFormShell>

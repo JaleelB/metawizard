@@ -150,7 +150,9 @@ export default function RobotsConfigLayout() {
 
   return (
     <FormStepLayout
-      code={generateRobotsFileContent(state) || ""}
+      code={
+        isGeneratingRobotsFile ? generateRobotsFileContent(state) || "" : ""
+      }
       title="robots.txt config preview"
     >
       <AnimatedFormShell className="w-full flex flex-col">

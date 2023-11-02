@@ -142,7 +142,11 @@ export default function SiteManifestConfigLayout() {
 
   return (
     <FormStepLayout
-      code={generateManifestDetailsContent(state) || ""}
+      code={
+        isGeneratingSiteManifestFile
+          ? generateManifestDetailsContent(state) || ""
+          : ""
+      }
       title="web manifest config preview"
     >
       <AnimatedFormShell className={"flex flex-col w-full"}>
