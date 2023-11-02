@@ -19,8 +19,10 @@ export default function Visualize() {
       </div>
       <div className="relative">
         <div className="relative mx-auto">
-          <div className="rounded-2xl border border-slate-900/10 bg-slate-900/5 dark:border-white/10 dark:bg-white/5 p-2">
-            <VideoPlayer />
+          <div className="rounded-2xl border  border-slate-900/10 bg-slate-900/5 dark:border-white/10 dark:bg-white/5 p-2">
+            <div className="max-w-[1512px] max-h-[852px]">
+              <VideoPlayer />
+            </div>
           </div>
         </div>
       </div>
