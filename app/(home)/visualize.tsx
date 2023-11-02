@@ -1,10 +1,6 @@
-"use client";
-import Image from "next/image";
-import { useTheme } from "next-themes";
+import VideoPlayer from "@/components/video-player";
 
 export default function Visualize() {
-  const { theme } = useTheme();
-
   return (
     <section
       id="features"
@@ -24,23 +20,7 @@ export default function Visualize() {
       <div className="relative">
         <div className="relative mx-auto">
           <div className="rounded-2xl border border-slate-900/10 bg-slate-900/5 dark:border-white/10 dark:bg-white/5 p-2">
-            {theme === "dark" ? (
-              <Image
-                src="/builder-frame-dark.png"
-                alt="hero banner"
-                width="1512"
-                height="852"
-                className="rounded-xl"
-              />
-            ) : (
-              <Image
-                src="/builder-frame-light.png"
-                alt="hero banner"
-                width="1512"
-                height="852"
-                className="rounded-xl"
-              />
-            )}
+            <VideoPlayer />
           </div>
         </div>
       </div>

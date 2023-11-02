@@ -1,11 +1,15 @@
+"use client";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/ui/icons";
 import { siteConfig } from "@/config/site";
 import Image from "next/image";
+import { useTheme } from "next-themes";
 
 export default function SiteHero() {
+  const { theme } = useTheme();
+
   return (
     <section className="pt-6">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -60,13 +64,23 @@ export default function SiteHero() {
         <div className="relative">
           <div className="relative mx-auto">
             <div className="rounded-2xl border border-slate-900/10 bg-slate-900/5 dark:border-white/10 dark:bg-white/5 p-2">
-              <Image
-                src="/hero-banner.png"
-                alt="hero banner"
-                width="1729"
-                height="982"
-                className="rounded-xl"
-              />
+              {theme === "dark" ? (
+                <Image
+                  src="/builder-frame-dark.png"
+                  alt="hero banner"
+                  width="1512"
+                  height="852"
+                  className="rounded-xl"
+                />
+              ) : (
+                <Image
+                  src="/builder-frame-light.png"
+                  alt="hero banner"
+                  width="1512"
+                  height="852"
+                  className="rounded-xl"
+                />
+              )}
             </div>
           </div>
         </div>
