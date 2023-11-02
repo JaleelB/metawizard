@@ -3,6 +3,7 @@ import { Icons } from "./ui/icons";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "./ui/button";
 import { siteConfig } from "@/config/site";
+import { DarkModeToggle } from "./dark-mode-toggle";
 
 export default function BuilderNav() {
   return (
@@ -40,13 +41,8 @@ export default function BuilderNav() {
             </Link>
           </div>
           <div className="flex gap-2 items-center">
-            {/* <Button size="sm" className="text-sm">
-              Save Changes
-            </Button> */}
             <div className="flex items-center">
-              <Button variant="ghost" className={cn("w-9 px-0")}>
-                <Icons.sun className="h-5 w-5 text-primary" />
-              </Button>
+              <DarkModeToggle />
               <Link
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
