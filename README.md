@@ -35,3 +35,7 @@ pnpm dev
 - [Typescript](https://www.typescriptlang.org/) – language
 - [Tailwind](https://tailwindcss.com/) – CSS
 - [Vercel](https://vercel.com/) – deployments
+
+## License
+
+Licensed under the [Apache-2.0 license](https://github.com/JaleelB/metawizard/blob/main/LICENSE.md).
