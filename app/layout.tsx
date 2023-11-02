@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { siteConfig } from "@/config/site";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -45,14 +46,22 @@ export const metadata: Metadata = {
     description:
       "An open-source metadata builder tool for generating metadata and metadata file conventions for Next.js apps.",
     siteName: "Metawizard",
+    images: [
+      {
+        url: `${siteConfig.url}/web-shot.png`,
+        width: 1200,
+        height: 715,
+        alt: "Callsquare",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Metawizard",
     description:
       "An open-source metadata builder tool for generating metadata and metadata file conventions for Next.js apps.",
-    images: "",
     creator: "@jal_eell",
+    images: [`${siteConfig.url}/web-shot.png`],
   },
   icons: {
     icon: "/favicon.ico",

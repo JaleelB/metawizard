@@ -1,5 +1,5 @@
-<a href="https://dub.co">
-  <img alt="MetaWizard – an open-source metadata builder tool for creating metadata and metadata file conventions for Next.js 13+ apps" src="https://github.com/steven-tey/dub/assets/28986134/8f70a87f-4f13-426a-9785-a47f77433edd">
+<a href="https://metawizard.vercel.app">
+  <img alt="MetaWizard – an open-source metadata builder tool for creating metadata and metadata file conventions for Next.js 13+ apps" src="./public/og.png">
   <h1 align="center">MetaWizard</h1>
 </a>
 
