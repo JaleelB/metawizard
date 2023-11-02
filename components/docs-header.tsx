@@ -3,6 +3,7 @@ import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "./ui/button";
 import { Icons } from "./ui/icons";
+import { DarkModeToggle } from "./dark-mode-toggle";
 
 export default function SiteHeader() {
   return (
@@ -15,6 +16,7 @@ export default function SiteHeader() {
           </span>
         </Link>
         <nav className="flex items-center">
+          <DarkModeToggle />
           <Link href={siteConfig.links.github} target="_blank" rel="noreferrer">
             <div
               className={cn(
