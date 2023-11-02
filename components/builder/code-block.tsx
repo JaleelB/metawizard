@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import CopyButton from "../copy-button";
 import { Highlight, themes } from "prism-react-renderer";
+import { useTheme } from "next-themes";
 
 function CodeBlock({
   value,
@@ -16,9 +17,18 @@ function CodeBlock({
   noMask?: boolean;
 }) {
   value = value || "";
+  const { theme } = useTheme();
+
+  const themeToggle = () => {
+    if (theme?.includes("dark")) {
+      return themes.nightOwl;
+    } else {
+      return themes.oneDark;
+    }
+  };
 
   return (
-    <Highlight theme={themes.oneDark} code={value} language="tsx">
+    <Highlight theme={themeToggle()} code={value} language="tsx">
       {({ style, tokens, getLineProps, getTokenProps }) => (
         <pre
           style={style}
