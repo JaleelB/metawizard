@@ -37,19 +37,32 @@ import { useSessionStorage } from "@/hooks/use-session-storage";
 type SiteManifestConfigSchema = z.infer<typeof siteManifestConfigSchema>;
 
 export default function SiteManifestConfigLayout() {
+  const { state, dispatch } = useFormContext();
   const form = useForm<SiteManifestConfigSchema>({
     resolver: zodResolver(siteManifestConfigSchema),
     defaultValues: {
-      generateSiteManifestFile: false,
-      generateStaticSiteManifestFile: true,
+      generateSiteManifestFile:
+        state.siteManifestConfigData.generateSiteManifestFile,
+      generateStaticSiteManifestFile:
+        state.siteManifestConfigData.generateStaticSiteManifestFile,
+      name: state.siteManifestConfigData.name,
+      short_name: state.siteManifestConfigData.short_name,
+      description: state.siteManifestConfigData.description,
+      start_url: state.siteManifestConfigData.start_url,
+      display: state.siteManifestConfigData.display,
+      background_color: state.siteManifestConfigData.background_color,
+      theme_color: state.siteManifestConfigData.theme_color,
+      icons: state.siteManifestConfigData.icons,
     },
   });
 
   const { toast } = useToast();
   const router = useRouter();
   const [isGeneratingSiteManifestFile, setIsGeneratingSiteManifestFile] =
-    React.useState(false);
-  const { state, dispatch } = useFormContext();
+    React.useState(
+      state.siteManifestConfigData.generateSiteManifestFile || false
+    );
+
   const storeName = "siteManifestConfig";
   const reducerStateGroup = `${storeName}Data`;
   const formIcons = form.getValues("icons");
@@ -114,16 +127,20 @@ export default function SiteManifestConfigLayout() {
   // Control the form values based on the generateSitemapFile value
   React.useEffect(() => {
     if (isGeneratingSiteManifestFile) {
-      form.setValue("icons", [
-        { src: "/favicon.ico", sizes: "any", type: "image/x-icon" },
-      ]);
+      if (state.siteManifestConfigData.icons.length === 0) {
+        form.setValue("icons", [
+          { src: "/favicon.ico", sizes: "any", type: "image/x-icon" },
+        ]);
 
-      handleInputChange({
-        target: {
-          name: "icons",
-          value: [{ src: "/favicon.ico", sizes: "any", type: "image/x-icon" }],
-        },
-      });
+        handleInputChange({
+          target: {
+            name: "icons",
+            value: [
+              { src: "/favicon.ico", sizes: "any", type: "image/x-icon" },
+            ],
+          },
+        });
+      }
     } else {
       form.setValue("icons", []);
       handleInputChange({
@@ -133,7 +150,12 @@ export default function SiteManifestConfigLayout() {
         },
       });
     }
-  }, [form, handleInputChange, isGeneratingSiteManifestFile]);
+  }, [
+    form,
+    handleInputChange,
+    isGeneratingSiteManifestFile,
+    state.siteManifestConfigData.icons.length,
+  ]);
 
   const onSubmit: SubmitHandler<SiteManifestConfigSchema> = async (values) => {
     await setSiteManifestConfig(values);

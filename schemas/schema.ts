@@ -104,18 +104,14 @@ export const robotsConfigSchema = z
   .object({
     generateRobotsFile: switchSchema,
     generateStaticRobotsFile: switchSchema,
-    rules: z.array(ruleSchema).optional(),
     host: urlSchema.optional(),
+    rules: z.array(ruleSchema).optional(),
   })
   .refine(
-    (data) => {
-      if (data.generateRobotsFile) {
-        return data.rules && data.rules.length > 0;
-      }
-      return true;
-    },
+    (data) =>
+      data.generateRobotsFile !== true || (data.rules && data.rules.length > 0),
     {
-      message: "rules is required when generateRobotsFile is true",
+      message: "At least one rule is required when generateRobotsFile is true",
       path: ["rules"],
     }
   );
@@ -160,25 +156,39 @@ export const siteManifestConfigSchema = z
       })
     ),
   })
+  .refine((data) => !data.generateSiteManifestFile || data.name, {
+    message: "Name is required",
+    path: ["name"],
+  })
+  .refine((data) => !data.generateSiteManifestFile || data.short_name, {
+    message: "Short name is required",
+    path: ["short_name"],
+  })
+  .refine((data) => !data.generateSiteManifestFile || data.description, {
+    message: "Description is required",
+    path: ["description"],
+  })
+  .refine((data) => !data.generateSiteManifestFile || data.start_url, {
+    message: "Start url is required",
+    path: ["start_url"],
+  })
+  .refine((data) => !data.generateSiteManifestFile || data.display, {
+    message: "Display is required",
+    path: ["display"],
+  })
+  .refine((data) => !data.generateSiteManifestFile || data.background_color, {
+    message: "Background Color is required",
+    path: ["background_color"],
+  })
+  .refine((data) => !data.generateSiteManifestFile || data.theme_color, {
+    message: "Theme Color is required",
+    path: ["theme_color"],
+  })
   .refine(
-    (data) => {
-      if (data.generateSiteManifestFile) {
-        return (
-          data.name &&
-          data.short_name &&
-          data.description &&
-          data.start_url &&
-          data.display &&
-          data.background_color &&
-          data.theme_color &&
-          data.icons &&
-          data.icons.length > 0
-        );
-      }
-      return true;
-    },
+    (data) =>
+      !data.generateSiteManifestFile || (data.icons && data.icons.length > 0),
     {
-      message: "icons is required when generateSiteManifestFile is true",
+      message: "At least one icon is required",
       path: ["icons"],
     }
   );

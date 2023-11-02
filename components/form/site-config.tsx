@@ -27,17 +27,26 @@ import { useSessionStorage } from "@/hooks/use-session-storage";
 export type SiteConfigSchema = z.infer<typeof siteConfigSchema>;
 
 export default function SiteConfigLayout() {
+  const { state, dispatch } = useFormContext();
+
   const form = useForm<SiteConfigSchema>({
     resolver: zodResolver(siteConfigSchema),
+    defaultValues: {
+      siteName: state.siteConfigData.siteName,
+      siteDescription: state.siteConfigData.siteDescription,
+      siteKeywords: state.siteConfigData.siteKeywords,
+      siteUrl: state.siteConfigData.siteUrl,
+    },
   });
 
   const { nextStep } = useWizard();
   const { toast } = useToast();
-  const [keywordTags, setKeywordTags] = React.useState<Tag[]>([]);
+  const [keywordTags, setKeywordTags] = React.useState<Tag[]>(
+    state.siteConfigData.siteKeywords || []
+  );
   const storeName = "siteConfig";
   const reducerStateGroup = `${storeName}Data`;
   const { setValue, formState } = form;
-  const { state, dispatch } = useFormContext();
 
   const [siteConfig, setSiteConfig] = useSessionStorage({
     key: storeName,

@@ -42,11 +42,14 @@ import { useSessionStorage } from "@/hooks/use-session-storage";
 type SitemapConfigSchema = z.infer<typeof sitemapConfigSchema>;
 
 export default function SitemapConfigLayout() {
+  const { state, dispatch } = useFormContext();
   const form = useForm<SitemapConfigSchema>({
     resolver: zodResolver(sitemapConfigSchema),
     defaultValues: {
-      generateSitemapFile: false,
-      generateStaticSitemapFile: true,
+      generateSitemapFile: state.sitemapConfigData.generateSitemapFile,
+      generateStaticSitemapFile:
+        state.sitemapConfigData.generateStaticSitemapFile,
+      siteEndpoints: state.sitemapConfigData.siteEndpoints,
     },
   });
 
@@ -81,10 +84,11 @@ export default function SitemapConfigLayout() {
 
   const { nextStep } = useWizard();
   const { toast } = useToast();
-  const [isGeneratingSitemapFile, setIsGeneratingSitemapFile] =
-    React.useState(false);
+  const [isGeneratingSitemapFile, setIsGeneratingSitemapFile] = React.useState(
+    state.sitemapConfigData.generateSitemapFile || false
+  );
   const generateSitemapFile = form.watch("generateSitemapFile");
-  const { state, dispatch } = useFormContext();
+
   const storeName = "sitemapConfig";
   const reducerStateGroup = `${storeName}Data`;
   const formEndpoints = form.getValues("siteEndpoints");
@@ -129,22 +133,24 @@ export default function SitemapConfigLayout() {
   // Control the form values based on the generateSitemapFile value
   React.useEffect(() => {
     if (generateSitemapFile) {
-      form.setValue("siteEndpoints", [
-        { endpoint: "/", changeFrequency: "monthly", priority: "0.5" },
-      ]);
+      if (state.sitemapConfigData.siteEndpoints?.length === 0) {
+        form.setValue("siteEndpoints", [
+          { endpoint: "/", changeFrequency: "monthly", priority: "0.5" },
+        ]);
 
-      handleInputChange({
-        target: {
-          name: "siteEndpoints",
-          value: [
-            {
-              endpoint: "/",
-              changeFrequency: "monthly",
-              priority: "0.5",
-            },
-          ],
-        },
-      });
+        handleInputChange({
+          target: {
+            name: "siteEndpoints",
+            value: [
+              {
+                endpoint: "/",
+                changeFrequency: "monthly",
+                priority: "0.5",
+              },
+            ],
+          },
+        });
+      }
     } else {
       form.setValue("siteEndpoints", []);
       handleInputChange({
@@ -154,7 +160,12 @@ export default function SitemapConfigLayout() {
         },
       });
     }
-  }, [form, generateSitemapFile, handleInputChange]);
+  }, [
+    form,
+    generateSitemapFile,
+    handleInputChange,
+    state.sitemapConfigData.siteEndpoints?.length,
+  ]);
 
   const onSubmit: SubmitHandler<SitemapConfigSchema> = async (values) => {
     await setSitemapConfig(values);

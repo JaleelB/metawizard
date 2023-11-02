@@ -28,21 +28,28 @@ export type SiteImagesConfigSchema = z.infer<typeof siteImagesConfigSchema>;
 export type Styles = typeof styles;
 
 export default function SiteImgagesLayout() {
+  const { state, dispatch } = useFormContext();
+
   const form = useForm<SiteImagesConfigSchema>({
     resolver: zodResolver(siteImagesConfigSchema),
     defaultValues: {
-      autoGenerateSiteLogo: false,
-      autoGenerateOpenGraphImage: false,
+      autoGenerateSiteLogo: state.siteImagesConfigData.autoGenerateSiteLogo,
+      autoGenerateOpenGraphImage:
+        state.siteImagesConfigData.autoGenerateOpenGraphImage,
+      siteLogoStyles: state.siteImagesConfigData.siteLogoStyles,
+      openGraphImageStyles: state.siteImagesConfigData.openGraphImageStyles,
     },
   });
 
   const { nextStep } = useWizard();
   const { toast } = useToast();
   const [isAutoGeneratingSiteLogo, setIsAutoGeneratingSiteLogo] =
-    React.useState(false);
+    React.useState(state.siteImagesConfigData.autoGenerateSiteLogo || false);
   const [isAutoGeneratingOpenGraphImage, setIsAutoGeneratingOpenGraphImage] =
-    React.useState(false);
-  const { state, dispatch } = useFormContext();
+    React.useState(
+      state.siteImagesConfigData.autoGenerateOpenGraphImage || false
+    );
+
   const storeName = "siteImagesConfig";
   const reducerStateGroup = `${storeName}Data`;
 

@@ -39,11 +39,16 @@ import { useSessionStorage } from "@/hooks/use-session-storage";
 export type RobotsConfigSchema = z.infer<typeof robotsConfigSchema>;
 
 export default function RobotsConfigLayout() {
+  const { state, dispatch } = useFormContext();
   const form = useForm<RobotsConfigSchema>({
     resolver: zodResolver(robotsConfigSchema),
     defaultValues: {
-      generateRobotsFile: false,
-      generateStaticRobotsFile: true,
+      // generateRobotsFile: false,
+      // generateStaticRobotsFile: true,
+      generateRobotsFile: state.robotsConfigData.generateRobotsFile,
+      generateStaticRobotsFile: state.robotsConfigData.generateStaticRobotsFile,
+      rules: state.robotsConfigData.rules,
+      // host: state.robotsConfigData.host,
     },
   });
 
@@ -54,10 +59,11 @@ export default function RobotsConfigLayout() {
 
   const { nextStep } = useWizard();
   const { toast } = useToast();
-  const [isGeneratingRobotsFile, setIsGeneratingRobotsFile] =
-    React.useState(false);
+  const [isGeneratingRobotsFile, setIsGeneratingRobotsFile] = React.useState(
+    state.robotsConfigData.generateRobotsFile || false
+  );
   const generateRobotsFile = form.watch("generateRobotsFile");
-  const { state, dispatch } = useFormContext();
+  // const { state, dispatch } = useFormContext();
   const storeName = "robotsConfig";
   const reducerStateGroup = `${storeName}Data`;
   const formRules = form.getValues("rules");
@@ -115,23 +121,25 @@ export default function RobotsConfigLayout() {
   // Control the form values based on the generateRobotsFile value
   React.useEffect(() => {
     if (generateRobotsFile) {
-      form.setValue("rules", [
-        { userAgent: "*", allow: "/", disallow: "/", crawlDelay: "Default" },
-      ]);
+      if (state.authorConfigData.authors?.length === 0) {
+        form.setValue("rules", [
+          { userAgent: "*", allow: "/", disallow: "/", crawlDelay: "Default" },
+        ]);
 
-      handleInputChange({
-        target: {
-          name: "rules",
-          value: [
-            {
-              userAgent: "*",
-              allow: "/",
-              disallow: "/",
-              crawlDelay: "Default",
-            },
-          ],
-        },
-      });
+        handleInputChange({
+          target: {
+            name: "rules",
+            value: [
+              {
+                userAgent: "*",
+                allow: "/",
+                disallow: "/",
+                crawlDelay: "Default",
+              },
+            ],
+          },
+        });
+      }
     } else {
       form.setValue("rules", []);
       handleInputChange({
@@ -141,7 +149,12 @@ export default function RobotsConfigLayout() {
         },
       });
     }
-  }, [form, generateRobotsFile, handleInputChange]);
+  }, [
+    form,
+    generateRobotsFile,
+    handleInputChange,
+    state.authorConfigData.authors?.length,
+  ]);
 
   const onSubmit: SubmitHandler<RobotsConfigSchema> = async (values) => {
     await setRobotsConfig(values);
@@ -150,9 +163,7 @@ export default function RobotsConfigLayout() {
 
   return (
     <FormStepLayout
-      code={
-        isGeneratingRobotsFile ? generateRobotsFileContent(state) || "" : ""
-      }
+      code={generateRobotsFileContent(state) || ""}
       title="robots.txt config preview"
     >
       <AnimatedFormShell className="w-full flex flex-col">

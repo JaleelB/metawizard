@@ -29,13 +29,19 @@ import { useSessionStorage } from "@/hooks/use-session-storage";
 export type AuthorConfigSchema = z.infer<typeof authorConfigSchema>;
 
 export default function AuthorConfigsLayout() {
+  const { state, dispatch } = useFormContext();
   const form = useForm<AuthorConfigSchema>({
     resolver: zodResolver(authorConfigSchema),
+    defaultValues: {
+      authors: state.authorConfigData.authors,
+      creator: state.authorConfigData.creator,
+      twitterUsername: state.authorConfigData.twitterUsername,
+    },
   });
 
   const { nextStep } = useWizard();
   const { toast } = useToast();
-  const { state, dispatch } = useFormContext();
+
   const formAuthors = form.getValues("authors");
   const storeName = "authorConfig";
   const reducerStateGroup = `${storeName}Data`;
@@ -86,15 +92,17 @@ export default function AuthorConfigsLayout() {
   );
 
   React.useEffect(() => {
-    form.setValue("authors", [{ name: "", url: "" }]);
+    if (state.authorConfigData.authors?.length === 0) {
+      form.setValue("authors", [{ name: "", url: "" }]);
 
-    handleInputChange({
-      target: {
-        name: "authors",
-        value: [{ name: "", url: "" }],
-      },
-    });
-  }, [form, handleInputChange]);
+      handleInputChange({
+        target: {
+          name: "authors",
+          value: [{ name: "", url: "" }],
+        },
+      });
+    }
+  }, [form, handleInputChange, state.authorConfigData.authors]);
 
   const onSubmit: SubmitHandler<AuthorConfigSchema> = async (values) => {
     await setAuthorConfig(values);
@@ -118,7 +126,7 @@ export default function AuthorConfigsLayout() {
               This is the list of authors of the site.
             </FormDescription>
             {fields.map((item, index) => (
-              <div key={item.id} className="w-full flex gap-2">
+              <div key={item.name} className="w-full flex gap-2">
                 <FormField
                   name={`authors.${index}.name`}
                   render={({ field }) => (
