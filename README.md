@@ -39,3 +39,9 @@ pnpm dev
 ## License
 
 Licensed under the [Apache-2.0 license](https://github.com/JaleelB/metawizard/blob/main/LICENSE.md).
+
+## Contributing
+
+Contributions are welcome! Please open an issue if you have any questions or suggestions. Your contributions are welcomed and will be acknowledged.
+
+See the [contributing guide](./CONTRIBUTING.md) for more information.
