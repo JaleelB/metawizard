@@ -116,9 +116,9 @@ export async function getPagerForDoc(doc: Doc) {
       if (link?.title === "Metadata Files" && !generatingMetadataFiles) {
         return false; // Exclude "Metadata Files" link if not generating metadata
       }
-      if (link?.title === "Metadata Object" && !generatingMetadataObject) {
-        return false; // Exclude "Metadata Objects" link if not generating metadata
-      }
+      // if (link?.title === "Metadata Object" && !generatingMetadataObject) {
+      //   return false; // Exclude "Metadata Objects" link if not generating metadata
+      // }
       return true; // Include all other links
     }),
     null,

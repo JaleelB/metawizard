@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: "Metawizard",
+  name: "MetaWizard",
   url: "https://metawizard.vercel.app/",
   ogImage: "https://metawizard.vercel.app/og.jpg",
   description:

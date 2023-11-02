@@ -7,6 +7,7 @@ import {
   siteManifestConfigSchema,
   sitemapConfigSchema,
 } from "@/schemas/schema";
+import { Icons } from "@/components/ui/icons";
 
 type ButtonProps = {
   navigateTo?: () => void;
@@ -25,3 +26,9 @@ export type schemaTypes =
   | z.infer<typeof robotsConfigSchema>
   | z.infer<typeof sitemapConfigSchema>
   | z.infer<typeof siteManifestConfigSchema>;
+
+export type NavItem = {
+  title: string;
+  icon?: keyof typeof Icons;
+  description: string;
+};

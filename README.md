@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<a href="https://dub.co">
+  <img alt="MetaWizard – an open-source metadata builder tool for creating metadata and metadata file conventions for Next.js 13+ apps" src="https://github.com/steven-tey/dub/assets/28986134/8f70a87f-4f13-426a-9785-a47f77433edd">
+  <h1 align="center">MetaWizard</h1>
+</a>
 
-## Getting Started
+<p align="center">
+  An open-source metadata builder tool for creating metadata and metadata file conventions for Next.js 13+ apps.
+</p>
 
-First, run the development server:
+<p align="center">
+  <a href="#introduction"><strong>Introduction</strong></a> ·
+  <a href="#local-development"><strong>Local Development</strong></a> ·
+  <a href="#tech-stack"><strong>Tech Stack</strong></a> ·
+  <a href="#contributing"><strong>Contributing</strong></a>
+</p>
+<br/>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
+## Introduction
+
+MetaWizard is an open-source metadata builder tool for creating metadata and metadata file conventions for Next.js 13+ apps.
+
+## Local Development
+
+To run the app locally, run the following commands:
+
+```
+pnpm i
+pnpm build
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [Next.js](https://nextjs.org/) – framework
+- [Typescript](https://www.typescriptlang.org/) – language
+- [Tailwind](https://tailwindcss.com/) – CSS
+- [Vercel](https://vercel.com/) – deployments
