@@ -8,6 +8,9 @@ export const siteConfig = {
     twitter: "https://twitter.com/jal_eelll",
     github: "https://github.com/JaleelB/metawizard",
   },
+  creator: {
+    name: "Jaleel Bennett",
+  },
 };
 
 export type SiteConfig = typeof siteConfig;

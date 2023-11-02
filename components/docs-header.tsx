@@ -5,15 +5,15 @@ import { buttonVariants } from "./ui/button";
 import { Icons } from "./ui/icons";
 import { DarkModeToggle } from "./dark-mode-toggle";
 
-export default function SiteHeader() {
+export default function DocsHeader() {
   return (
     <header className="supports-backdrop-blur:bg-background/60 sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
-      <div className="px-4 md:px-8 flex h-14 items-center justify-between">
-        <Link href="/" className="mr-6 flex items-center space-x-2">
-          <Icons.logo className="h-6 w-6" />
-          <span className="hidden font-bold sm:inline-block">
+      <div className="px-4 md:px-8 flex h-16 items-center justify-between">
+        <Link href="/" className="flex items-center gap-2">
+          <Icons.logo className="h-[30px] w-[30px] text-primary" />
+          <h4 className="hidden sm:block font-heading font-semibold text-lg">
             {siteConfig.name}
-          </span>
+          </h4>
         </Link>
         <nav className="flex items-center">
           <DarkModeToggle />
