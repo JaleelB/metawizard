@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { Doc } from "contentlayer/generated";
 import { NavItem, NavItemWithChildren } from "types/nav";
@@ -11,6 +12,7 @@ import { robotsConfig } from "@/data/robots";
 import { siteManifestConfig } from "@/data/manifest";
 import { siteImagesConfigType } from "@/data/images";
 import { authorType, siteConfig } from "@/data/site";
+import React, { use } from "react";
 
 type DocsPagerProps = {
   doc: Doc;
@@ -71,8 +73,21 @@ export async function isGeneratingMetadataObject() {
   return !isAuthorConfigEmpty && !isSiteConfigEmpty;
 }
 
-export async function DocsPager({ doc }: DocsPagerProps) {
-  const pager = await getPagerForDoc(doc);
+export function DocsPager({ doc }: DocsPagerProps) {
+  const [pager, setPager] = React.useState<{
+    prev: NavItem | null;
+    next: NavItem | null;
+  } | null>(null);
+  // const pager = await getPagerForDoc(doc);
+
+  React.useEffect(() => {
+    async function getPager() {
+      const pager = await getPagerForDoc(doc);
+      setPager(pager);
+    }
+
+    getPager();
+  }, [doc]);
 
   if (!pager) {
     return null;
@@ -116,9 +131,9 @@ export async function getPagerForDoc(doc: Doc) {
       if (link?.title === "Metadata Files" && !generatingMetadataFiles) {
         return false; // Exclude "Metadata Files" link if not generating metadata
       }
-      // if (link?.title === "Metadata Object" && !generatingMetadataObject) {
-      //   return false; // Exclude "Metadata Objects" link if not generating metadata
-      // }
+      if (link?.title === "Metadata Object" && !generatingMetadataObject) {
+        return false; // Exclude "Metadata Objects" link if not generating metadata
+      }
       return true; // Include all other links
     }),
     null,
