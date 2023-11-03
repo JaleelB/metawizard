@@ -8,9 +8,9 @@ export default function VideoPlayer({ ...props }) {
       autoPlay
       loop
       className={cn("rounded-xl", props.className)}
-      poster={"/builder-frame-light.png"}
+      poster={"/viusalize-frame.png"}
     >
-      <source src={"/demo-light.mov"} type="video/mp4" />
+      <source src={process.env.NEXT_PUBLIC_DEMO_VIDEO_URL} type="video/mp4" />
     </video>
   );
 }

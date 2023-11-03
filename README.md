@@ -1,7 +1,8 @@
-<a href="https://metawizard.vercel.app">
-  <img alt="MetaWizard – an open-source metadata builder tool for creating metadata and metadata file conventions for Next.js 13+ apps" src="./public/og.png">
-  <h1 align="center">MetaWizard</h1>
-</a>
+# MetaWizard
+
+<video controls>
+  <source src="./public/demo.mov" type="video/mp4">
+</video>
 
 <p align="center">
   An open-source metadata builder tool for creating metadata and metadata file conventions for Next.js 13+ apps.
