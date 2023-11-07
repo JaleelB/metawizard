@@ -19,6 +19,9 @@ module.exports = {
       screens: {
         "2xl": "1440px",
       },
+      fontFamily: {
+        sans: ["var(--font-geist-sans)"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
