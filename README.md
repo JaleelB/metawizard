@@ -1,6 +1,6 @@
 # MetaWizard
 
-[![Fallback Image](./public/viusalize-frame.png)
+![Fallback Image](./public/viusalize-frame.png)
 
 <p align="center">
   An open-source metadata builder tool for creating metadata and metadata file conventions for Next.js 13+ apps.
