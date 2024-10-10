@@ -6,6 +6,7 @@ import { GeistSans } from "geist/font";
 import { ThemeProvider } from "@/components/theme-provider";
 import { siteConfig } from "@/config/site";
 import { Analytics } from "@vercel/analytics/react";
+import Script from "next/script";
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -88,6 +89,11 @@ export default function RootLayout({
           <Analytics />
         </ThemeProvider>
         <Toaster />
+        <Script
+          async
+          src={process.env.UMAMI_URL}
+          data-website-id={process.env.UMAMI_DATA_WEBSITE_ID}
+        />
       </body>
     </html>
   );
