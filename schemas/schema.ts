@@ -100,18 +100,44 @@ export const authorConfigSchema = z.object({
   twitterUsername: z.string().optional(),
 });
 
+// export const robotsConfigSchema = z
+//   .object({
+//     generateRobotsFile: switchSchema,
+//     generateStaticRobotsFile: switchSchema,
+//     generateDefaultRobotsFile: switchSchema,
+//     host: urlSchema.optional(),
+//     rules: z.array(ruleSchema).optional(),
+//   })
+//   .refine(
+//     (data) =>
+//       data.generateRobotsFile !== true || (data.rules && data.rules.length > 0),
+//     {
+//       message: "At least one rule is required when generateRobotsFile is true",
+//       path: ["rules"],
+//     }
+//   );
 export const robotsConfigSchema = z
   .object({
     generateRobotsFile: switchSchema,
     generateStaticRobotsFile: switchSchema,
+    generateDefaultRobotsFile: switchSchema,
     host: urlSchema.optional(),
     rules: z.array(ruleSchema).optional(),
   })
   .refine(
-    (data) =>
-      data.generateRobotsFile !== true || (data.rules && data.rules.length > 0),
+    (data) => {
+      // If generateRobotsFile is true and generateDefaultRobotsFile is false,
+      // then rules are required and must have a length greater than 0.
+      if (data.generateRobotsFile && !data.generateDefaultRobotsFile) {
+        return data.rules && data.rules.length > 0;
+      }
+      // If generateDefaultRobotsFile is true, or generateRobotsFile is false,
+      // then rules are not required.
+      return true;
+    },
     {
-      message: "At least one rule is required when generateRobotsFile is true",
+      message:
+        "At least one rule is required when generateRobotsFile is true and generateDefaultRobotsFile is not true",
       path: ["rules"],
     }
   );
@@ -120,17 +146,23 @@ export const sitemapConfigSchema = z
   .object({
     generateSitemapFile: switchSchema,
     generateStaticSitemapFile: switchSchema,
+    generateDefaultSitemapFile: switchSchema,
     siteEndpoints: z.array(siteEndpointSchema).optional(),
   })
   .refine(
     (data) => {
-      if (data.generateSitemapFile) {
+      // If generateSitemapFile is true and generateDefaultSitemapFile is false,
+      // then siteEndpoints is required and must have a length greater than 0.
+      if (data.generateSitemapFile && !data.generateDefaultSitemapFile) {
         return data.siteEndpoints && data.siteEndpoints.length > 0;
       }
+      // If generateDefaultSitemapFile is true, or generateSitemapFile is false,
+      // then siteEndpoints is not required.
       return true;
     },
     {
-      message: "siteEndpoints is required when generateSitemapFile is true",
+      message:
+        "siteEndpoints is required when generateSitemapFile is true and generateDefaultSitemapFile is not true",
       path: ["siteEndpoints"],
     }
   );

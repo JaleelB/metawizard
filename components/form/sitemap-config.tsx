@@ -49,6 +49,8 @@ export default function SitemapConfigLayout() {
       generateSitemapFile: state.sitemapConfigData.generateSitemapFile,
       generateStaticSitemapFile:
         state.sitemapConfigData.generateStaticSitemapFile,
+      generateDefaultSitemapFile:
+        state.sitemapConfigData.generateDefaultSitemapFile,
       siteEndpoints: state.sitemapConfigData.siteEndpoints,
     },
   });
@@ -87,6 +89,8 @@ export default function SitemapConfigLayout() {
   const [isGeneratingSitemapFile, setIsGeneratingSitemapFile] = React.useState(
     state.sitemapConfigData.generateSitemapFile || false
   );
+  const [generateDefaultSitemapFile, setGenerateDefaultSitemapFile] =
+    React.useState(state.sitemapConfigData.generateDefaultSitemapFile || false);
   const generateSitemapFile = form.watch("generateSitemapFile");
 
   const storeName = "sitemapConfig";
@@ -266,6 +270,40 @@ export default function SitemapConfigLayout() {
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="generateDefaultSitemapFile"
+            render={({ field }) => (
+              <FormItem className="flex flex-row justify-between items-center space-y-0 rounded-md border p-4">
+                <div className="space-y-1 leading-none mr-4 sm:mr-2">
+                  <FormLabel>Generate a default sitemap file</FormLabel>
+                  <FormDescription>
+                    A default sitemap file is generally ideal for most
+                    situations that don&apos;t require extra customization or
+                    rules.
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <Switch
+                    id="generate-default-sitemap"
+                    checked={field.value}
+                    disabled={!isGeneratingSitemapFile}
+                    onCheckedChange={(checkedState) => {
+                      field.onChange(checkedState);
+                      const event = {
+                        target: {
+                          name: "generateDefaultSitemapFile",
+                          checked: checkedState,
+                        },
+                      };
+                      setGenerateDefaultSitemapFile(checkedState);
+                      handleInputChange(event);
+                    }}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
           <div className="flex flex-col space-y-2 sm:col-span-full pt-4">
             <FormLabel>Site Endpoints</FormLabel>
             <FormDescription className="pb-4">
@@ -287,7 +325,10 @@ export default function SitemapConfigLayout() {
                       <FormControl>
                         <Input
                           {...field}
-                          disabled={!isGeneratingSitemapFile}
+                          disabled={
+                            !isGeneratingSitemapFile ||
+                            generateDefaultSitemapFile
+                          }
                           type="text"
                           placeholder="Endpoint"
                           className={`w-full ${
@@ -327,8 +368,9 @@ export default function SitemapConfigLayout() {
                     <FormItem className="min-w-[100px]">
                       <Select
                         {...field}
-                        disabled={!isGeneratingSitemapFile}
-                        // onValueChange={field.onChange}
+                        disabled={
+                          !isGeneratingSitemapFile || generateDefaultSitemapFile
+                        }
                         onValueChange={(selectedValue) => {
                           form.setValue(
                             `siteEndpoints.${index}.changeFrequency`,
@@ -377,8 +419,10 @@ export default function SitemapConfigLayout() {
                       <FormItem className="min-w-[100px]">
                         <Select
                           {...field}
-                          disabled={!isGeneratingSitemapFile}
-                          // onValueChange={field.onChange}
+                          disabled={
+                            !isGeneratingSitemapFile ||
+                            generateDefaultSitemapFile
+                          }
                           onValueChange={(selectedValue) => {
                             form.setValue(
                               `siteEndpoints.${index}.priority`,
@@ -423,8 +467,9 @@ export default function SitemapConfigLayout() {
                     size="icon"
                     variant="ghost"
                     type="button"
-                    disabled={!isGeneratingSitemapFile}
-                    // onClick={() => remove(index)}
+                    disabled={
+                      !isGeneratingSitemapFile || generateDefaultSitemapFile
+                    }
                     onClick={() => {
                       if (!state.sitemapConfigData.siteEndpoints) return;
                       const siteEndpoints = [
@@ -453,7 +498,7 @@ export default function SitemapConfigLayout() {
             <Button
               type="button"
               variant="secondary"
-              disabled={!isGeneratingSitemapFile}
+              disabled={!isGeneratingSitemapFile || generateDefaultSitemapFile}
               size="sm"
               className={cn("w-fit")}
               onClick={() => {

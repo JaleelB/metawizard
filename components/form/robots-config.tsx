@@ -43,12 +43,11 @@ export default function RobotsConfigLayout() {
   const form = useForm<RobotsConfigSchema>({
     resolver: zodResolver(robotsConfigSchema),
     defaultValues: {
-      // generateRobotsFile: false,
-      // generateStaticRobotsFile: true,
       generateRobotsFile: state.robotsConfigData.generateRobotsFile,
       generateStaticRobotsFile: state.robotsConfigData.generateStaticRobotsFile,
+      generateDefaultRobotsFile:
+        state.robotsConfigData.generateDefaultRobotsFile,
       rules: state.robotsConfigData.rules,
-      // host: state.robotsConfigData.host,
     },
   });
 
@@ -62,6 +61,8 @@ export default function RobotsConfigLayout() {
   const [isGeneratingRobotsFile, setIsGeneratingRobotsFile] = React.useState(
     state.robotsConfigData.generateRobotsFile || false
   );
+  const [generateDefaultRobotsFile, setGenerateDefaultRobotsFile] =
+    React.useState(state.robotsConfigData.generateDefaultRobotsFile || false);
   const generateRobotsFile = form.watch("generateRobotsFile");
   // const { state, dispatch } = useFormContext();
   const storeName = "robotsConfig";
@@ -250,6 +251,41 @@ export default function RobotsConfigLayout() {
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="generateDefaultRobotsFile"
+            render={({ field }) => (
+              <FormItem className="flex flex-row justify-between items-center space-y-0 rounded-md border p-4">
+                <div className="space-y-1 leading-none mr-4 sm:mr-2">
+                  <FormLabel>Generate a default robots file</FormLabel>
+                  <FormDescription>
+                    A default robots file is generally ideal for most situations
+                    that don&apos;t require extra customization or endpoints. It
+                    will allow all user agents and disallow access to private
+                    directories.
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <Switch
+                    id="generate-default-robots"
+                    checked={field.value}
+                    disabled={!generateRobotsFile}
+                    onCheckedChange={(checkedState) => {
+                      field.onChange(checkedState);
+                      const event = {
+                        target: {
+                          name: "generateDefaultRobotsFile",
+                          checked: checkedState,
+                        },
+                      };
+                      setGenerateDefaultRobotsFile(checkedState);
+                      handleInputChange(event);
+                    }}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
           <div className="flex flex-col space-y-2 sm:col-span-full pt-4">
             <FormLabel>Rules</FormLabel>
             <FormDescription className="pb-4">
@@ -268,7 +304,9 @@ export default function RobotsConfigLayout() {
                     >
                       <FormControl>
                         <Input
-                          disabled={!isGeneratingRobotsFile}
+                          disabled={
+                            !isGeneratingRobotsFile || generateDefaultRobotsFile
+                          }
                           type="text"
                           placeholder="User Agent"
                           className={`w-full ${
@@ -313,7 +351,9 @@ export default function RobotsConfigLayout() {
                     >
                       <FormControl>
                         <Input
-                          disabled={!isGeneratingRobotsFile}
+                          disabled={
+                            !isGeneratingRobotsFile || generateDefaultRobotsFile
+                          }
                           type="text"
                           placeholder="Allow"
                           className={`w-full ${
@@ -358,7 +398,9 @@ export default function RobotsConfigLayout() {
                     >
                       <FormControl>
                         <Input
-                          disabled={!isGeneratingRobotsFile}
+                          disabled={
+                            !isGeneratingRobotsFile || generateDefaultRobotsFile
+                          }
                           type="text"
                           placeholder="Disallow"
                           className={`w-full ${
@@ -401,7 +443,9 @@ export default function RobotsConfigLayout() {
                       <FormItem className="min-w-[100px] w-full">
                         <Select
                           {...field}
-                          disabled={!isGeneratingRobotsFile}
+                          disabled={
+                            !isGeneratingRobotsFile || generateDefaultRobotsFile
+                          }
                           onValueChange={(selectedValue) => {
                             form.setValue(
                               `rules.${index}.crawlDelay`,
@@ -453,7 +497,9 @@ export default function RobotsConfigLayout() {
                     size="icon"
                     variant="ghost"
                     type="button"
-                    disabled={!isGeneratingRobotsFile}
+                    disabled={
+                      !isGeneratingRobotsFile || generateDefaultRobotsFile
+                    }
                     onClick={() => {
                       if (!state.robotsConfigData.rules) return;
                       const rules = [...state.robotsConfigData.rules];
@@ -480,7 +526,7 @@ export default function RobotsConfigLayout() {
             <Button
               type="button"
               variant="secondary"
-              disabled={!isGeneratingRobotsFile}
+              disabled={!isGeneratingRobotsFile || generateDefaultRobotsFile}
               size="sm"
               className={cn("w-fit")}
               onClick={() => {

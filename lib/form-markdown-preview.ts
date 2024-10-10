@@ -197,9 +197,21 @@ export function generateRobotsFileContent(state: State) {
 
   if (formData.generateRobotsFile) {
     if (formData.generateStaticRobotsFile) {
-      let staticRobotsContent = "";
-      formData.rules?.forEach((rule) => {
-        staticRobotsContent += `
+      if (formData.generateDefaultRobotsFile) {
+        return `
+        // Static robots.txt
+        // app/robots.txt
+
+        User-Agent: *
+        Allow: /
+        Disallow: /private/
+
+        Sitemap: ${siteConfig.siteUrl}/sitemap.xml
+        `;
+      } else {
+        let staticRobotsContent = "";
+        formData.rules?.forEach((rule) => {
+          staticRobotsContent += `
       User-Agent: ${rule.userAgent}
       Allow: ${rule.allow}
       Disallow: ${rule.disallow}
@@ -209,8 +221,8 @@ export function generateRobotsFileContent(state: State) {
           : ""
       }
       `;
-      });
-      return `
+        });
+        return `
       // Static robots.txt
       // app/robots.txt
 
@@ -221,10 +233,27 @@ export function generateRobotsFileContent(state: State) {
           ? `Sitemap: ${siteConfig.siteUrl}/sitemap.xml`
           : ""
       }`;
+      }
     } else {
-      let dynamicRobotsContent = "rules: [";
-      formData.rules?.forEach((rule) => {
-        dynamicRobotsContent += `
+      if (formData.generateDefaultRobotsFile) {
+        return `
+        import { MetadataRoute } from 'next'
+ 
+        export default function robots(): MetadataRoute.Robots {
+          return {
+            rules: {
+              userAgent: '*',
+              allow: '/',
+              disallow: '/private/',
+            },
+            sitemap: 'https://acme.com/sitemap.xml',
+          }
+        }
+        `;
+      } else {
+        let dynamicRobotsContent = "rules: [";
+        formData.rules?.forEach((rule) => {
+          dynamicRobotsContent += `
         {
           User-Agent: '${rule.userAgent}',
           Allow: '${rule.allow}',
@@ -232,9 +261,9 @@ export function generateRobotsFileContent(state: State) {
           ${rule.crawlDelay ? `Crawl-Delay: ${rule.crawlDelay},` : ""}
         },
       `;
-      });
-      dynamicRobotsContent += "],";
-      return `
+        });
+        dynamicRobotsContent += "],";
+        return `
       // Dynamic robots.ts
       // app/robots.ts
 
@@ -251,6 +280,7 @@ export function generateRobotsFileContent(state: State) {
           }
         }
       }`;
+      }
     }
   }
 }
@@ -263,7 +293,19 @@ export function generateSitemapDetailsContent(state: State) {
     const endpointUrl = `${siteConfig.siteUrl}`;
 
     if (formData.generateStaticSitemapFile) {
-      return `
+      if (formData.generateDefaultSitemapFile) {
+        return `
+        // Static sitemap.xml
+        // app/sitemap.xml
+
+        User-Agent: *
+        Allow: /
+        Disallow: /private/
+
+        Sitemap: ${endpointUrl}/sitemap.xml
+        `;
+      } else {
+        return `
       // Static sitemap.xml
       // app/sitemap.xml
 
@@ -286,13 +328,28 @@ export function generateSitemapDetailsContent(state: State) {
       )}
       </urlset>
       `;
+      }
     } else {
       const siteEndpoints = formData.siteEndpoints;
 
-      return `
-      // Dynamic sitemap.ts
+      if (formData.generateDefaultSitemapFile) {
+        return `// Dynamic sitemap.ts
       // app/sitemap.ts
 
+      import { MetadataRoute } from 'next'
+
+      export default function robots(): MetadataRoute.Robots {
+        return {
+          rules: {
+            userAgent: '*',
+            allow: '/',
+            disallow: '/private/',
+          },
+          sitemap: ${endpointUrl}/sitemap.xml,
+        }
+      }`;
+      } else {
+        return `
       import { MetadataRoute } from 'next'
 
       export default function sitemap(): MetadataRoute.Sitemap {
@@ -332,6 +389,7 @@ export function generateSitemapDetailsContent(state: State) {
         ]
       }
     `;
+      }
     }
   }
 }

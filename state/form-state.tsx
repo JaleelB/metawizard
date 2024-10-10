@@ -109,12 +109,14 @@ export const initialState: State = {
   robotsConfigData: {
     generateRobotsFile: false,
     generateStaticRobotsFile: false,
+    generateDefaultRobotsFile: false,
     rules: [],
     host: "",
   },
   sitemapConfigData: {
     generateSitemapFile: false,
     generateStaticSitemapFile: false,
+    generateDefaultSitemapFile: false,
     siteEndpoints: [],
   },
   siteManifestConfigData: {
